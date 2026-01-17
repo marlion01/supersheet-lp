@@ -5,7 +5,7 @@ import sitemap from '@astrojs/sitemap';
 // https://astro.build/config
 export default defineConfig({
   site: 'https://supersheet-team.github.io',
-  // base: '/lp', // Commented out for development
+  base: '/lp',
   
   // i18n Configuration
   i18n: {
@@ -26,17 +26,21 @@ export default defineConfig({
     tailwind({
       applyBaseStyles: false,
     }),
-    sitemap({
-      i18n: {
-        defaultLocale: 'ja',
-        locales: {
-          ja: 'ja',
-          en: 'en',
-          zh: 'zh',
-          ko: 'ko',
-        },
-      },
-    }),
+    // sitemap({
+    //   i18n: {
+    //     defaultLocale: 'ja',
+    //     locales: {
+    //       ja: 'ja-JP',
+    //       en: 'en-US', 
+    //       zh: 'zh-CN',
+    //       ko: 'ko-KR',
+    //     },
+    //   },
+    //   filter: (page) => {
+    //     // Include all pages except any that might be problematic
+    //     return !page.includes('undefined');
+    //   },
+    // }),
   ],
 
   // Build configuration for GitHub Pages
