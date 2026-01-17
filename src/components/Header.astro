@@ -1,0 +1,295 @@
+---
+import type { Locale } from '~/types';
+import { 
+  getLocalizedText, 
+  navItems, 
+  getLocaleFromUrl, 
+  getAlternativeLocale
+} from '~/utils/i18n';
+
+interface Props {
+  locale?: Locale;
+}
+
+const currentLocale = Astro.props.locale || getLocaleFromUrl(Astro.url);
+const alternativeLocale = getAlternativeLocale(currentLocale);
+
+// Build navigation URLs
+const homeUrl = currentLocale === 'ja' ? '/' : '/en/';
+const pricingUrl = currentLocale === 'ja' ? '/pricing/' : '/en/pricing/';
+const alternativeUrl = alternativeLocale === 'ja' ? '/' : '/en/';
+
+// Logo text based on locale
+const logoText = currentLocale === 'ja' ? 'SuperSheet' : 'SuperSheet';
+---
+
+<header 
+  class="bg-white/95 backdrop-blur-sm border-b border-neutral-200 sticky top-0 z-50"
+  role="banner"
+>
+  <div class="container-custom">
+    <div class="flex items-center justify-between h-16 sm:h-20">
+      <!-- Logo -->
+      <div class="flex-shrink-0">
+        <a 
+          href={homeUrl}
+          class="flex items-center space-x-2 text-2xl font-bold text-primary-600 hover:text-primary-700 transition-colors duration-200"
+          aria-label={currentLocale === 'ja' ? 'SuperSheet ホームページ' : 'SuperSheet Home'}
+        >
+          <!-- Logo Icon/SVG -->
+          <svg 
+            class="w-8 h-8" 
+            viewBox="0 0 32 32" 
+            fill="none" 
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+          >
+            <rect width="32" height="32" rx="6" fill="currentColor"/>
+            <rect x="6" y="6" width="20" height="20" rx="2" fill="white"/>
+            <rect x="8" y="8" width="4" height="4" fill="currentColor"/>
+            <rect x="14" y="8" width="4" height="4" fill="currentColor"/>
+            <rect x="20" y="8" width="4" height="4" fill="currentColor"/>
+            <rect x="8" y="14" width="4" height="4" fill="currentColor"/>
+            <rect x="14" y="14" width="4" height="4" fill="currentColor"/>
+            <rect x="20" y="14" width="4" height="4" fill="currentColor"/>
+            <rect x="8" y="20" width="4" height="4" fill="currentColor"/>
+            <rect x="14" y="20" width="4" height="4" fill="currentColor"/>
+            <rect x="20" y="20" width="4" height="4" fill="currentColor"/>
+          </svg>
+          <span class="font-bold text-xl">
+            {logoText}
+          </span>
+        </a>
+      </div>
+
+      <!-- Navigation & Language Switcher -->
+      <nav class="hidden sm:flex items-center space-x-6" role="navigation">
+        <!-- Navigation Links -->
+        <div class="flex items-center space-x-6">
+          <a 
+            href={homeUrl}
+            class="text-neutral-700 hover:text-primary-600 font-medium transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 rounded-sm px-2 py-1"
+          >
+            {getLocalizedText(navItems.home, currentLocale)}
+          </a>
+          
+          <a 
+            href={`${homeUrl}#features`}
+            class="text-neutral-700 hover:text-primary-600 font-medium transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 rounded-sm px-2 py-1"
+          >
+            {getLocalizedText(navItems.features, currentLocale)}
+          </a>
+
+          <a 
+            href={pricingUrl}
+            class="text-neutral-700 hover:text-primary-600 font-medium transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 rounded-sm px-2 py-1"
+          >
+            {getLocalizedText(navItems.pricing, currentLocale)}
+          </a>
+        </div>
+
+        <!-- Language Switcher -->
+        <div class="flex items-center">
+          <div class="relative">
+            <a
+              href={alternativeUrl}
+              class="inline-flex items-center px-3 py-2 text-sm font-medium text-neutral-700 bg-neutral-100 hover:bg-neutral-200 hover:text-primary-600 rounded-lg transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
+              aria-label={currentLocale === 'ja' ? 'Switch to English' : '日本語に切り替え'}
+              hreflang={alternativeLocale === 'ja' ? 'ja' : 'en'}
+            >
+              <!-- Language Icon -->
+              <svg 
+                class="w-4 h-4 mr-2" 
+                fill="none" 
+                stroke="currentColor" 
+                viewBox="0 0 24 24" 
+                xmlns="http://www.w3.org/2000/svg"
+                aria-hidden="true"
+              >
+                <path 
+                  stroke-linecap="round" 
+                  stroke-linejoin="round" 
+                  stroke-width="2" 
+                  d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"
+                />
+              </svg>
+              
+              <span>
+                {alternativeLocale === 'ja' ? '日本語' : 'English'}
+              </span>
+            </a>
+          </div>
+        </div>
+      </nav>
+
+      <!-- Mobile Menu Button -->
+      <div class="sm:hidden">
+        <button
+          type="button"
+          class="mobile-menu-button inline-flex items-center justify-center p-2 rounded-md text-neutral-700 hover:text-primary-600 hover:bg-neutral-100 focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 transition-colors duration-200"
+          aria-expanded="false"
+          aria-controls="mobile-menu"
+          aria-label={currentLocale === 'ja' ? 'メニューを開く' : 'Open menu'}
+        >
+          <!-- Menu Icon -->
+          <svg 
+            class="menu-icon block h-6 w-6" 
+            fill="none" 
+            viewBox="0 0 24 24" 
+            stroke-width="1.5" 
+            stroke="currentColor" 
+            aria-hidden="true"
+          >
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+          </svg>
+          
+          <!-- Close Icon -->
+          <svg 
+            class="close-icon hidden h-6 w-6" 
+            fill="none" 
+            viewBox="0 0 24 24" 
+            stroke-width="1.5" 
+            stroke="currentColor" 
+            aria-hidden="true"
+          >
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div 
+      class="mobile-menu hidden sm:hidden border-t border-neutral-200 bg-white"
+      id="mobile-menu"
+      role="menu"
+    >
+      <div class="px-2 pt-2 pb-3 space-y-1">
+        <a 
+          href={homeUrl}
+          class="block px-3 py-2 text-base font-medium text-neutral-700 hover:text-primary-600 hover:bg-neutral-100 rounded-md transition-colors duration-200"
+          role="menuitem"
+        >
+          {getLocalizedText(navItems.home, currentLocale)}
+        </a>
+        
+        <a 
+          href={`${homeUrl}#features`}
+          class="block px-3 py-2 text-base font-medium text-neutral-700 hover:text-primary-600 hover:bg-neutral-100 rounded-md transition-colors duration-200"
+          role="menuitem"
+        >
+          {getLocalizedText(navItems.features, currentLocale)}
+        </a>
+
+        <a 
+          href={pricingUrl}
+          class="block px-3 py-2 text-base font-medium text-neutral-700 hover:text-primary-600 hover:bg-neutral-100 rounded-md transition-colors duration-200"
+          role="menuitem"
+        >
+          {getLocalizedText(navItems.pricing, currentLocale)}
+        </a>
+        
+        <!-- Mobile Language Switcher -->
+        <a
+          href={alternativeUrl}
+          class="flex items-center px-3 py-2 text-base font-medium text-neutral-700 hover:text-primary-600 hover:bg-neutral-100 rounded-md transition-colors duration-200"
+          role="menuitem"
+          hreflang={alternativeLocale === 'ja' ? 'ja' : 'en'}
+        >
+          <svg 
+            class="w-5 h-5 mr-3" 
+            fill="none" 
+            stroke="currentColor" 
+            viewBox="0 0 24 24" 
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+          >
+            <path 
+              stroke-linecap="round" 
+              stroke-linejoin="round" 
+              stroke-width="2" 
+              d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"
+            />
+          </svg>
+          {alternativeLocale === 'ja' ? '日本語' : 'English'}
+        </a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<script>
+  // Mobile menu toggle functionality
+  document.addEventListener('DOMContentLoaded', () => {
+    const mobileMenuButton = document.querySelector('.mobile-menu-button') as HTMLButtonElement;
+    const mobileMenu = document.querySelector('.mobile-menu') as HTMLElement;
+    const menuIcon = document.querySelector('.menu-icon') as HTMLElement;
+    const closeIcon = document.querySelector('.close-icon') as HTMLElement;
+
+    if (mobileMenuButton && mobileMenu && menuIcon && closeIcon) {
+      mobileMenuButton.addEventListener('click', () => {
+        const isExpanded = mobileMenuButton.getAttribute('aria-expanded') === 'true';
+        
+        // Toggle menu visibility
+        mobileMenu.classList.toggle('hidden');
+        
+        // Update aria-expanded
+        mobileMenuButton.setAttribute('aria-expanded', (!isExpanded).toString());
+        
+        // Toggle icons
+        menuIcon.classList.toggle('hidden');
+        closeIcon.classList.toggle('hidden');
+        
+        // Focus management
+        if (!isExpanded) {
+          // Menu is opening, focus first menu item
+          const firstMenuItem = mobileMenu.querySelector('a');
+          firstMenuItem?.focus();
+        }
+      });
+
+      // Close mobile menu when clicking outside
+      document.addEventListener('click', (e) => {
+        if (!mobileMenuButton.contains(e.target as Node) && !mobileMenu.contains(e.target as Node)) {
+          mobileMenu.classList.add('hidden');
+          mobileMenuButton.setAttribute('aria-expanded', 'false');
+          menuIcon.classList.remove('hidden');
+          closeIcon.classList.add('hidden');
+        }
+      });
+
+      // Handle escape key
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && !mobileMenu.classList.contains('hidden')) {
+          mobileMenu.classList.add('hidden');
+          mobileMenuButton.setAttribute('aria-expanded', 'false');
+          menuIcon.classList.remove('hidden');
+          closeIcon.classList.add('hidden');
+          mobileMenuButton.focus();
+        }
+      });
+    }
+  });
+</script>
+
+<style>
+  /* Ensure mobile menu animation is smooth */
+  .mobile-menu {
+    transition: all 0.2s ease-in-out;
+  }
+
+  /* Enhanced focus styles for better accessibility */
+  .mobile-menu a:focus {
+    outline: 2px solid #6366f1;
+    outline-offset: 2px;
+  }
+
+  /* Reduce motion for users who prefer it */
+  @media (prefers-reduced-motion: reduce) {
+    .mobile-menu,
+    .mobile-menu-button,
+    nav a {
+      transition: none !important;
+    }
+  }
+</style>

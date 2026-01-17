@@ -1,0 +1,349 @@
+---
+import type { Locale } from '~/types';
+import { 
+  getLocalizedText, 
+  ctaUrls,
+  getLocaleFromUrl
+} from '~/utils/i18n';
+
+interface Props {
+  locale?: Locale;
+}
+
+const currentLocale = Astro.props.locale || getLocaleFromUrl(Astro.url);
+const ctaUrl = ctaUrls[currentLocale];
+
+// Build pricing URL
+const pricingUrl = currentLocale === 'ja' ? '/pricing/' : '/en/pricing/';
+
+// Footer content
+const footerContent = {
+  cta: {
+    title: {
+      ja: '今すぐ始めましょう',
+      en: 'Get Started Today'
+    },
+    description: {
+      ja: '次世代のスプレッドシート体験を、いち早くお試しください。',
+      en: 'Experience the next generation of spreadsheet tools.'
+    },
+    button: {
+      ja: 'ウェイティングリストに登録',
+      en: 'Join the Waitlist'
+    }
+  },
+  links: {
+    product: {
+      ja: 'プロダクト',
+      en: 'Product'
+    },
+    company: {
+      ja: '会社情報',
+      en: 'Company'
+    },
+    support: {
+      ja: 'サポート',
+      en: 'Support'
+    }
+  },
+  copyright: {
+    ja: 'SuperSheet Team. 全権利保有。',
+    en: 'SuperSheet Team. All rights reserved.'
+  },
+  privacy: {
+    ja: 'プライバシーポリシー',
+    en: 'Privacy Policy'
+  },
+  terms: {
+    ja: '利用規約',
+    en: 'Terms of Service'
+  }
+};
+
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="bg-neutral-900 text-white" role="contentinfo">
+  <!-- CTA Section -->
+  <div class="border-b border-neutral-800">
+    <div class="container-custom py-16">
+      <div class="text-center animate-on-scroll">
+        <h2 class="heading-lg mb-6 text-white">
+          {getLocalizedText(footerContent.cta.title, currentLocale)}
+        </h2>
+        <p class="text-lead text-neutral-300 mb-8 max-w-2xl mx-auto">
+          {getLocalizedText(footerContent.cta.description, currentLocale)}
+        </p>
+        <a
+          href={ctaUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn btn-accent text-lg px-8 py-4 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
+        >
+          {getLocalizedText(footerContent.cta.button, currentLocale)}
+          <svg 
+            class="ml-2 w-5 h-5" 
+            fill="none" 
+            stroke="currentColor" 
+            viewBox="0 0 24 24" 
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+          >
+            <path 
+              stroke-linecap="round" 
+              stroke-linejoin="round" 
+              stroke-width="2" 
+              d="M17 8l4 4m0 0l-4 4m4-4H3"
+            />
+          </svg>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Footer -->
+  <div class="container-custom py-12">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+      
+      <!-- Company Info -->
+      <div class="lg:col-span-2">
+        <!-- Logo -->
+        <div class="flex items-center space-x-2 mb-6">
+          <svg 
+            class="w-8 h-8 text-accent-400" 
+            viewBox="0 0 32 32" 
+            fill="none" 
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+          >
+            <rect width="32" height="32" rx="6" fill="currentColor"/>
+            <rect x="6" y="6" width="20" height="20" rx="2" fill="#1f2937"/>
+            <rect x="8" y="8" width="4" height="4" fill="currentColor"/>
+            <rect x="14" y="8" width="4" height="4" fill="currentColor"/>
+            <rect x="20" y="8" width="4" height="4" fill="currentColor"/>
+            <rect x="8" y="14" width="4" height="4" fill="currentColor"/>
+            <rect x="14" y="14" width="4" height="4" fill="currentColor"/>
+            <rect x="20" y="14" width="4" height="4" fill="currentColor"/>
+            <rect x="8" y="20" width="4" height="4" fill="currentColor"/>
+            <rect x="14" y="20" width="4" height="4" fill="currentColor"/>
+            <rect x="20" y="20" width="4" height="4" fill="currentColor"/>
+          </svg>
+          <span class="text-2xl font-bold text-white">SuperSheet</span>
+        </div>
+        
+        <p class="text-neutral-300 mb-6 max-w-md">
+          {currentLocale === 'ja' 
+            ? 'ExcelとNotionとZapierの良いとこ取りをした、次世代のハイブリッド表計算プラットフォーム。'
+            : 'The next-generation hybrid spreadsheet platform combining the best of Excel, Notion, and Zapier.'
+          }
+        </p>
+
+        <!-- Social Links (placeholder) -->
+        <div class="flex space-x-4">
+          <a
+            href="#"
+            class="text-neutral-400 hover:text-accent-400 transition-colors duration-200"
+            aria-label="Twitter"
+          >
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+              <path d="M6.29 18.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0020 3.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.073 4.073 0 01.8 7.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 010 16.407a11.616 11.616 0 006.29 1.84"/>
+            </svg>
+          </a>
+          <a
+            href="#"
+            class="text-neutral-400 hover:text-accent-400 transition-colors duration-200"
+            aria-label="GitHub"
+          >
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+              <path fill-rule="evenodd" d="M10 0C4.477 0 0 4.484 0 10.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0110 4.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.203 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.942.359.31.678.921.678 1.856 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0020 10.017C20 4.484 15.522 0 10 0z" clip-rule="evenodd"/>
+            </svg>
+          </a>
+          <a
+            href="#"
+            class="text-neutral-400 hover:text-accent-400 transition-colors duration-200"
+            aria-label="LinkedIn"
+          >
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+              <path fill-rule="evenodd" d="M16.338 16.338H13.67V12.16c0-.995-.017-2.277-1.387-2.277-1.39 0-1.601 1.086-1.601 2.207v4.248H8.014v-8.59h2.559v1.174h.037c.356-.675 1.227-1.387 2.526-1.387 2.703 0 3.203 1.778 3.203 4.092v4.711zM5.005 6.575a1.548 1.548 0 11-.003-3.096 1.548 1.548 0 01.003 3.096zm-1.337 9.763H6.34v-8.59H3.667v8.59zM17.668 1H2.328C1.595 1 1 1.581 1 2.298v15.403C1 18.418 1.595 19 2.328 19h15.34c.734 0 1.332-.582 1.332-1.299V2.298C19 1.581 18.402 1 17.668 1z" clip-rule="evenodd"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Quick Links -->
+      <div>
+        <h3 class="text-lg font-semibold text-white mb-4">
+          {getLocalizedText(footerContent.links.product, currentLocale)}
+        </h3>
+        <ul class="space-y-3">
+          <li>
+            <a href="#features" class="text-neutral-300 hover:text-accent-400 transition-colors duration-200">
+              {currentLocale === 'ja' ? '機能' : 'Features'}
+            </a>
+          </li>
+          <li>
+            <a href={pricingUrl} class="text-neutral-300 hover:text-accent-400 transition-colors duration-200">
+              {currentLocale === 'ja' ? '価格' : 'Pricing'}
+            </a>
+          </li>
+          <li>
+            <a href="#" class="text-neutral-300 hover:text-accent-400 transition-colors duration-200">
+              {currentLocale === 'ja' ? 'ロードマップ' : 'Roadmap'}
+            </a>
+          </li>
+          <li>
+            <a href={ctaUrl} target="_blank" rel="noopener noreferrer" class="text-neutral-300 hover:text-accent-400 transition-colors duration-200">
+              {currentLocale === 'ja' ? 'ベータ版' : 'Beta Access'}
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Support Links -->
+      <div>
+        <h3 class="text-lg font-semibold text-white mb-4">
+          {getLocalizedText(footerContent.links.support, currentLocale)}
+        </h3>
+        <ul class="space-y-3">
+          <li>
+            <a href="#" class="text-neutral-300 hover:text-accent-400 transition-colors duration-200">
+              {currentLocale === 'ja' ? 'ヘルプセンター' : 'Help Center'}
+            </a>
+          </li>
+          <li>
+            <a href="#" class="text-neutral-300 hover:text-accent-400 transition-colors duration-200">
+              {currentLocale === 'ja' ? 'ドキュメント' : 'Documentation'}
+            </a>
+          </li>
+          <li>
+            <a href="#" class="text-neutral-300 hover:text-accent-400 transition-colors duration-200">
+              {currentLocale === 'ja' ? 'お問い合わせ' : 'Contact Us'}
+            </a>
+          </li>
+          <li>
+            <a href="#" class="text-neutral-300 hover:text-accent-400 transition-colors duration-200">
+              {currentLocale === 'ja' ? 'ステータス' : 'Status'}
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Bar -->
+  <div class="border-t border-neutral-800">
+    <div class="container-custom py-6">
+      <div class="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+        <div class="text-sm text-neutral-400">
+          © {currentYear} {getLocalizedText(footerContent.copyright, currentLocale)}
+        </div>
+        
+        <div class="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-6">
+          <a href="#" class="text-sm text-neutral-400 hover:text-accent-400 transition-colors duration-200">
+            {getLocalizedText(footerContent.privacy, currentLocale)}
+          </a>
+          <a href="#" class="text-sm text-neutral-400 hover:text-accent-400 transition-colors duration-200">
+            {getLocalizedText(footerContent.terms, currentLocale)}
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Back to Top Button -->
+  <button
+    type="button"
+    id="back-to-top"
+    class="fixed bottom-8 right-8 bg-primary-600 hover:bg-primary-700 text-white p-3 rounded-full shadow-lg transition-all duration-300 opacity-0 invisible focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
+    aria-label={currentLocale === 'ja' ? 'ページトップに戻る' : 'Back to top'}
+  >
+    <svg 
+      class="w-5 h-5" 
+      fill="none" 
+      stroke="currentColor" 
+      viewBox="0 0 24 24" 
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
+    >
+      <path 
+        stroke-linecap="round" 
+        stroke-linejoin="round" 
+        stroke-width="2" 
+        d="M5 10l7-7m0 0l7 7m-7-7v18"
+      />
+    </svg>
+  </button>
+</footer>
+
+<script>
+  // Back to top button functionality
+  document.addEventListener('DOMContentLoaded', () => {
+    const backToTopButton = document.getElementById('back-to-top') as HTMLButtonElement;
+    
+    if (backToTopButton) {
+      // Show/hide button based on scroll position
+      const toggleBackToTopButton = () => {
+        if (window.pageYOffset > 300) {
+          backToTopButton.classList.remove('opacity-0', 'invisible');
+          backToTopButton.classList.add('opacity-100', 'visible');
+        } else {
+          backToTopButton.classList.add('opacity-0', 'invisible');
+          backToTopButton.classList.remove('opacity-100', 'visible');
+        }
+      };
+
+      // Scroll to top when button is clicked
+      backToTopButton.addEventListener('click', () => {
+        const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        
+        window.scrollTo({
+          top: 0,
+          behavior: reducedMotion ? 'auto' : 'smooth'
+        });
+      });
+
+      // Listen for scroll events with throttling for performance
+      let ticking = false;
+      const handleScroll = () => {
+        if (!ticking) {
+          requestAnimationFrame(() => {
+            toggleBackToTopButton();
+            ticking = false;
+          });
+          ticking = true;
+        }
+      };
+
+      window.addEventListener('scroll', handleScroll, { passive: true });
+    }
+  });
+</script>
+
+<style>
+  /* Back to top button styles */
+  #back-to-top {
+    transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.2s ease;
+  }
+
+  #back-to-top:hover {
+    transform: translateY(-2px);
+  }
+
+  /* Reduced motion support */
+  @media (prefers-reduced-motion: reduce) {
+    #back-to-top:hover {
+      transform: none;
+    }
+  }
+
+  /* High contrast mode */
+  @media (prefers-contrast: high) {
+    footer {
+      border-top: 2px solid #fff;
+    }
+    
+    .border-neutral-800 {
+      border-color: #fff;
+    }
+  }
+</style>

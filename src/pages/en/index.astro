@@ -1,0 +1,111 @@
+---
+import Layout from '~/layouts/Layout.astro';
+import Header from '~/components/Header.astro';
+import Hero from '~/components/Hero.astro';
+import Features from '~/components/Features.astro';
+import Footer from '~/components/Footer.astro';
+import type { Locale } from '~/types';
+import { seoMeta, getLocalizedText } from '~/utils/i18n';
+
+const locale: Locale = 'en';
+
+// SEO Meta for English page
+const pageTitle = getLocalizedText(seoMeta.title, locale);
+const pageDescription = getLocalizedText(seoMeta.description, locale);
+const pageKeywords = getLocalizedText(seoMeta.keywords, locale);
+
+// Canonical URL for English page
+const canonicalUrl = Astro.site ? `${Astro.site}en/` : 'https://supersheet-team.github.io/lp/en/';
+---
+
+<Layout 
+  title={pageTitle}
+  description={pageDescription}
+  keywords={pageKeywords}
+  locale={locale}
+  canonicalUrl={canonicalUrl}
+>
+  <!-- Skip to main content is already in Layout.astro -->
+  
+  <!-- Header -->
+  <Header locale={locale} />
+  
+  <!-- Main Content -->
+  <main id="main-content">
+    <!-- Hero Section -->
+    <Hero locale={locale} />
+    
+    <!-- Features Section -->
+    <Features locale={locale} />
+  </main>
+  
+  <!-- Footer -->
+  <Footer locale={locale} />
+</Layout>
+
+<!-- JSON-LD structured data for English page -->
+<script type="application/ld+json" is:inline>
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": "https://supersheet-team.github.io/lp/en/",
+  "url": "https://supersheet-team.github.io/lp/en/",
+  "name": "SuperSheet - The Next-Gen Hybrid Spreadsheet Platform",
+  "description": "The flexibility of Excel, organization of Notion, and automation of Zapier. All in one. A next-gen hybrid spreadsheet combining local speed with cloud robustness.",
+  "inLanguage": "en",
+  "isPartOf": {
+    "@type": "WebSite",
+    "@id": "https://supersheet-team.github.io/lp/#website",
+    "url": "https://supersheet-team.github.io/lp/",
+    "name": "SuperSheet",
+    "description": "The Next-Gen Hybrid Spreadsheet Platform",
+    "publisher": {
+      "@type": "Organization",
+      "name": "SuperSheet Team",
+      "@id": "https://supersheet-team.github.io/lp/#organization"
+    },
+    "potentialAction": [
+      {
+        "@type": "SearchAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "https://supersheet-team.github.io/lp/en/?s={search_term_string}"
+        },
+        "query-input": "required name=search_term_string"
+      }
+    ]
+  },
+  "about": {
+    "@type": "SoftwareApplication",
+    "name": "SuperSheet",
+    "applicationCategory": "Spreadsheet Software",
+    "operatingSystem": "Cross-platform",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
+  },
+  "mainEntity": {
+    "@type": "SoftwareApplication",
+    "name": "SuperSheet",
+    "description": "The Next-Gen Hybrid Spreadsheet Platform",
+    "applicationCategory": "ProductivityApplication",
+    "operatingSystem": ["Windows", "macOS", "Linux"],
+    "softwareVersion": "1.0.0",
+    "releaseNotes": "Beta release coming soon",
+    "screenshot": "https://supersheet-team.github.io/lp/assets/screenshot.png",
+    "softwareHelp": "https://supersheet-team.github.io/lp/en/help",
+    "author": {
+      "@type": "Organization",
+      "name": "SuperSheet Team"
+    },
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD",
+      "availability": "https://schema.org/InStock"
+    }
+  }
+}
+</script>

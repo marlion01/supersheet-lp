@@ -1,0 +1,115 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Base styles */
+@layer base {
+  html {
+    @apply scroll-smooth;
+  }
+  
+  body {
+    @apply font-sans text-neutral-900 bg-white leading-relaxed;
+  }
+
+  /* Focus styles for accessibility */
+  *:focus {
+    @apply outline-none;
+  }
+
+  *:focus-visible {
+    @apply ring-2 ring-primary-500 ring-offset-2 rounded-sm;
+  }
+
+  /* Skip link for screen readers */
+  .skip-link {
+    @apply absolute top-0 left-0 z-50 px-4 py-2 bg-primary-600 text-white text-sm rounded-br transform -translate-y-full;
+    @apply focus:translate-y-0 transition-transform duration-300;
+  }
+}
+
+/* Component layer */
+@layer components {
+  /* Button styles */
+  .btn {
+    @apply inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-lg;
+    @apply focus-visible:ring-2 focus-visible:ring-offset-2 transition-all duration-200;
+  }
+  
+  .btn-primary {
+    @apply bg-primary-600 text-white hover:bg-primary-700 focus-visible:ring-primary-500;
+  }
+  
+  .btn-accent {
+    @apply bg-accent-500 text-white hover:bg-accent-600 focus-visible:ring-accent-500;
+  }
+  
+  .btn-outline {
+    @apply bg-transparent text-primary-600 border-primary-600 hover:bg-primary-50 focus-visible:ring-primary-500;
+  }
+
+  /* Section padding */
+  .section-padding {
+    @apply px-4 sm:px-6 lg:px-8 py-16 sm:py-20 lg:py-24;
+  }
+
+  /* Container */
+  .container-custom {
+    @apply max-w-7xl mx-auto;
+  }
+
+  /* Headings */
+  .heading-xl {
+    @apply text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-neutral-900;
+  }
+  
+  .heading-lg {
+    @apply text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-neutral-900;
+  }
+  
+  .heading-md {
+    @apply text-2xl sm:text-3xl font-bold tracking-tight text-neutral-900;
+  }
+
+  /* Text styles */
+  .text-lead {
+    @apply text-lg sm:text-xl text-neutral-600 leading-relaxed;
+  }
+}
+
+/* Utilities layer */
+@layer utilities {
+  /* Animation utilities */
+  .animate-on-scroll {
+    @apply opacity-0 translate-y-8 transition-all duration-700 ease-out;
+  }
+  
+  .animate-on-scroll.is-visible {
+    @apply opacity-100 translate-y-0;
+  }
+
+  /* Reduced motion support */
+  @media (prefers-reduced-motion: reduce) {
+    * {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+    
+    .animate-on-scroll {
+      @apply opacity-100 translate-y-0;
+    }
+  }
+
+  /* High contrast support */
+  @media (prefers-contrast: high) {
+    .btn-primary {
+      @apply bg-neutral-900 border-neutral-900;
+    }
+    
+    .btn-accent {
+      @apply bg-neutral-900 border-neutral-900;
+    }
+  }
+}

@@ -1,0 +1,283 @@
+---
+import type { Locale } from '~/types';
+import { 
+  getLocalizedText, 
+  pricingContent,
+  ctaUrls,
+  getLocaleFromUrl 
+} from '~/utils/i18n';
+
+interface Props {
+  locale?: Locale;
+}
+
+const currentLocale = Astro.props.locale || getLocaleFromUrl(Astro.url);
+const ctaUrl = ctaUrls[currentLocale];
+
+// Get localized content
+const title = getLocalizedText(pricingContent.title, currentLocale);
+const subtitle = getLocalizedText(pricingContent.subtitle, currentLocale);
+const ctaText = getLocalizedText(pricingContent.cta, currentLocale);
+const note = getLocalizedText(pricingContent.note, currentLocale);
+---
+
+<section 
+  class="relative bg-white section-padding" 
+  id="pricing"
+  aria-labelledby="pricing-heading"
+>
+  <div class="container-custom">
+    <!-- Section Header -->
+    <div class="text-center mb-16 animate-on-scroll">
+      <h2 
+        id="pricing-heading"
+        class="heading-lg mb-6 text-neutral-900"
+      >
+        {title}
+      </h2>
+      <p class="text-lead max-w-3xl mx-auto text-neutral-600">
+        {subtitle}
+      </p>
+    </div>
+
+    <!-- Pricing Plans Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+      {pricingContent.plans.map((plan, index) => {
+        const animationDelay = `animation-delay-${(index + 1) * 200}`;
+        const planName = getLocalizedText(plan.name, currentLocale);
+        const planSubtitle = getLocalizedText(plan.subtitle, currentLocale);
+        const planDescription = getLocalizedText(plan.description, currentLocale);
+        const planPrice = getLocalizedText(plan.price, currentLocale);
+        const planPeriod = getLocalizedText(plan.period, currentLocale);
+        
+        return (
+          <div 
+            class={`relative bg-white rounded-2xl shadow-lg border-2 overflow-hidden transition-all duration-500 hover:shadow-2xl animate-on-scroll ${animationDelay} ${
+              plan.recommended 
+                ? 'border-primary-500 transform scale-105 lg:scale-110' 
+                : 'border-neutral-200 hover:border-primary-300'
+            }`}
+          >
+            {plan.recommended && (
+              <div class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                <div class="bg-primary-500 text-white px-6 py-2 rounded-full text-sm font-semibold shadow-lg">
+                  {currentLocale === 'ja' ? '人気' : 'Most Popular'}
+                </div>
+              </div>
+            )}
+
+            <div class="p-8">
+              <div class="text-center mb-8">
+                <h3 class="text-2xl font-bold text-neutral-900 mb-2">
+                  {planName}
+                </h3>
+                <p class="text-lg font-semibold text-primary-600 mb-2">
+                  {planSubtitle}
+                </p>
+                <p class="text-neutral-600 mb-6">
+                  {planDescription}
+                </p>
+
+                <div class="mb-6">
+                  <div class="flex items-baseline justify-center">
+                    <span class={`text-5xl font-bold ${plan.id === 'starter' ? 'text-accent-500' : 'text-neutral-900'}`}>
+                      {planPrice}
+                    </span>
+                  </div>
+                  <p class="text-neutral-600 mt-1">
+                    {planPeriod}
+                  </p>
+                </div>
+
+                <a
+                  href={ctaUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class={`btn w-full text-center py-3 px-6 rounded-lg font-semibold transition-all duration-300 ${
+                    plan.recommended 
+                      ? 'btn-primary shadow-lg hover:shadow-xl transform hover:-translate-y-0.5' 
+                      : 'btn-outline'
+                  }`}
+                >
+                  {ctaText}
+                </a>
+              </div>
+
+              <div class="space-y-4">
+                <h4 class="font-semibold text-neutral-900 border-b border-neutral-200 pb-2">
+                  {currentLocale === 'ja' ? '機能' : 'Features'}
+                </h4>
+                <ul class="space-y-3">
+                  {plan.features.map((feature) => (
+                    <li class="flex items-start">
+                      <svg 
+                        class="w-5 h-5 text-accent-500 mr-3 mt-0.5 flex-shrink-0" 
+                        fill="currentColor" 
+                        viewBox="0 0 20 20" 
+                        xmlns="http://www.w3.org/2000/svg"
+                        aria-hidden="true"
+                      >
+                        <path 
+                          fill-rule="evenodd" 
+                          d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" 
+                          clip-rule="evenodd"
+                        />
+                      </svg>
+                      <span class="text-neutral-700">
+                        {getLocalizedText(feature, currentLocale)}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+
+            {plan.recommended && (
+              <div class="absolute bottom-0 left-0 w-full h-2 bg-gradient-to-r from-primary-500 to-accent-500" aria-hidden="true"></div>
+            )}
+          </div>
+        );
+      })}
+    </div>
+
+    <!-- Footer Note -->
+    <div class="text-center animate-on-scroll animation-delay-800">
+      <div class="bg-neutral-50 rounded-xl p-6 max-w-4xl mx-auto">
+        <p class="text-sm text-neutral-600 mb-4">
+          {note}
+        </p>
+        
+        <!-- FAQ Link or Contact -->
+        <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+          <a
+            href="#"
+            class="text-primary-600 hover:text-primary-700 font-medium transition-colors duration-200"
+          >
+            {currentLocale === 'ja' ? 'よくある質問' : 'FAQ'}
+          </a>
+          <span class="hidden sm:inline text-neutral-400">•</span>
+          <a
+            href="#"
+            class="text-primary-600 hover:text-primary-700 font-medium transition-colors duration-200"
+          >
+            {currentLocale === 'ja' ? 'お問い合わせ' : 'Contact Us'}
+          </a>
+          <span class="hidden sm:inline text-neutral-400">•</span>
+          <a
+            href="#"
+            class="text-primary-600 hover:text-primary-700 font-medium transition-colors duration-200"
+          >
+            {currentLocale === 'ja' ? '企業向けプラン' : 'Enterprise Plans'}
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Animation delays for staggered entrance */
+  .animation-delay-200 {
+    animation-delay: 200ms;
+  }
+
+  .animation-delay-400 {
+    animation-delay: 400ms;
+  }
+
+  .animation-delay-600 {
+    animation-delay: 600ms;
+  }
+
+  .animation-delay-800 {
+    animation-delay: 800ms;
+  }
+
+  /* Enhanced card hover effects */
+  .group:hover {
+    transform: translateY(-4px);
+  }
+
+  /* Pricing card specific animations */
+  .pricing-card {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .pricing-card:hover {
+    transform: translateY(-8px);
+  }
+
+  /* Recommended plan pulse effect */
+  @keyframes pulse {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: .8;
+    }
+  }
+
+  /* High contrast mode adjustments */
+  @media (prefers-contrast: high) {
+    .bg-neutral-50 {
+      background-color: white;
+      border: 2px solid black;
+    }
+    
+    .shadow-lg,
+    .shadow-xl,
+    .shadow-2xl {
+      box-shadow: 0 0 0 2px #000;
+    }
+
+    .border-primary-500 {
+      border-color: black;
+    }
+  }
+
+  /* Reduced motion support */
+  @media (prefers-reduced-motion: reduce) {
+    .pricing-card:hover {
+      transform: none;
+    }
+    
+    .btn:hover {
+      transform: none;
+    }
+    
+    .scale-105,
+    .scale-110 {
+      transform: none;
+    }
+  }
+</style>
+
+<script>
+  // Enhanced pricing page interactions
+  document.addEventListener('DOMContentLoaded', () => {
+    // Add subtle parallax effect to pricing cards
+    const pricingCards = document.querySelectorAll('.pricing-card');
+    
+    pricingCards.forEach((card) => {
+      const htmlCard = card as HTMLElement;
+      card.addEventListener('mouseenter', () => {
+        htmlCard.style.willChange = 'transform';
+      });
+      
+      card.addEventListener('mouseleave', () => {
+        htmlCard.style.willChange = 'auto';
+      });
+    });
+
+    // Track pricing plan clicks for analytics (if needed)
+    const ctaButtons = document.querySelectorAll('[data-plan]');
+    ctaButtons.forEach((button) => {
+      button.addEventListener('click', (e) => {
+        const target = e.target as HTMLElement;
+        const plan = target?.getAttribute('data-plan');
+        // Analytics tracking could go here
+        console.log(`Pricing CTA clicked: ${plan}`);
+      });
+    });
+  });
+</script>

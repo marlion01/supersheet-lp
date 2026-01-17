@@ -1,0 +1,315 @@
+---
+import type { Locale } from '~/types';
+import { 
+  getLocalizedText, 
+  heroContent, 
+  ctaUrls,
+  getLocaleFromUrl 
+} from '~/utils/i18n';
+
+interface Props {
+  locale?: Locale;
+}
+
+const currentLocale = Astro.props.locale || getLocaleFromUrl(Astro.url);
+const ctaUrl = ctaUrls[currentLocale];
+
+// Get localized content
+const headline = getLocalizedText(heroContent.headline, currentLocale);
+const subheadline = getLocalizedText(heroContent.subheadline, currentLocale);
+const ctaText = getLocalizedText(heroContent.cta, currentLocale);
+
+// Additional localized text  
+const trustText = currentLocale === 'ja'
+  ? '数千人の開発者が既に登録済み'
+  : 'Trusted by thousands of developers';
+---
+
+<section 
+  class="relative bg-gradient-to-br from-primary-50 via-white to-accent-50 overflow-hidden"
+  aria-labelledby="hero-heading"
+>
+  <!-- Background Pattern -->
+  <div class="absolute inset-0 opacity-5" aria-hidden="true">
+    <svg class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <pattern id="hero-pattern" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
+          <rect width="2" height="2" fill="currentColor" class="text-primary-600"/>
+        </pattern>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#hero-pattern)"/>
+    </svg>
+  </div>
+
+  <!-- Decorative Elements -->
+  <div class="absolute top-0 left-0 w-72 h-72 bg-primary-100 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000" aria-hidden="true"></div>
+  <div class="absolute top-0 right-0 w-72 h-72 bg-accent-100 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000" aria-hidden="true"></div>
+  <div class="absolute bottom-0 left-20 w-72 h-72 bg-purple-100 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob" aria-hidden="true"></div>
+
+  <div class="relative container-custom section-padding">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+      
+      <!-- Content -->
+      <div class="text-center lg:text-left animate-on-scroll">
+        <!-- Headline -->
+        <h1 
+          id="hero-heading"
+          class="heading-xl mb-6 text-neutral-900"
+        >
+          {headline}
+        </h1>
+
+        <!-- Subheadline -->
+        <p class="text-lead mb-8 max-w-2xl mx-auto lg:mx-0">
+          {subheadline}
+        </p>
+
+        <!-- CTA Buttons -->
+        <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start mb-8">
+          <a
+            href={ctaUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn btn-primary text-lg px-8 py-4 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
+            aria-describedby="cta-description"
+          >
+            {ctaText}
+            <svg 
+              class="ml-2 w-5 h-5" 
+              fill="none" 
+              stroke="currentColor" 
+              viewBox="0 0 24 24" 
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
+            >
+              <path 
+                stroke-linecap="round" 
+                stroke-linejoin="round" 
+                stroke-width="2" 
+                d="M13 7l5 5m0 0l-5 5m5-5H6"
+              />
+            </svg>
+          </a>
+
+          <button
+            type="button"
+            class="btn btn-outline text-lg px-8 py-4 group"
+            aria-label={currentLocale === 'ja' ? 'デモビデオを見る' : 'Watch demo video'}
+            data-demo-trigger
+          >
+            <svg 
+              class="mr-2 w-5 h-5 group-hover:scale-110 transition-transform duration-200" 
+              fill="none" 
+              stroke="currentColor" 
+              viewBox="0 0 24 24" 
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
+            >
+              <path 
+                stroke-linecap="round" 
+                stroke-linejoin="round" 
+                stroke-width="2" 
+                d="M14.828 14.828a4 4 0 01-5.656 0M9 10h1m4 0h1m-6 4h8m-9 4h10a1 1 0 001-1V7a1 1 0 00-1-1H7a1 1 0 00-1 1v10a1 1 0 001 1z"
+              />
+            </svg>
+            {currentLocale === 'ja' ? 'デモを見る' : 'Watch Demo'}
+          </button>
+        </div>
+
+        <!-- Trust Indicators -->
+        <div class="flex items-center justify-center lg:justify-start space-x-2 text-sm text-neutral-600">
+          <svg 
+            class="w-5 h-5 text-accent-500" 
+            fill="currentColor" 
+            viewBox="0 0 20 20" 
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+          >
+            <path 
+              fill-rule="evenodd" 
+              d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" 
+              clip-rule="evenodd"
+            />
+          </svg>
+          <span>{trustText}</span>
+        </div>
+
+        <!-- Hidden description for screen readers -->
+        <p id="cta-description" class="sr-only">
+          {currentLocale === 'ja' 
+            ? 'Google Formを使用した事前登録フォームが新しいタブで開きます。無料でサインアップできます。'
+            : 'Opens registration form in a new tab using Google Forms. Free to sign up.'
+          }
+        </p>
+      </div>
+
+      <!-- Hero Image/Animation -->
+      <div class="relative animate-on-scroll animation-delay-300">
+        <!-- Main Visual -->
+        <div class="relative mx-auto max-w-lg lg:max-w-none">
+          <!-- Placeholder for actual product screenshot/animation -->
+          <div class="relative bg-white rounded-2xl shadow-2xl border border-neutral-200 overflow-hidden">
+            <!-- Mock Interface -->
+            <div class="bg-gradient-to-r from-primary-600 to-primary-700 h-12 flex items-center px-4">
+              <div class="flex space-x-2">
+                <div class="w-3 h-3 bg-red-400 rounded-full"></div>
+                <div class="w-3 h-3 bg-yellow-400 rounded-full"></div>
+                <div class="w-3 h-3 bg-green-400 rounded-full"></div>
+              </div>
+              <div class="ml-4 text-white font-medium text-sm">
+                SuperSheet
+              </div>
+            </div>
+
+            <!-- Mock Content -->
+            <div class="p-6 space-y-4">
+              <!-- Spreadsheet Header -->
+              <div class="grid grid-cols-4 gap-2 text-xs font-medium text-neutral-600 border-b pb-2">
+                <div>A</div>
+                <div>B</div>
+                <div>C</div>
+                <div>D</div>
+              </div>
+
+              <!-- Spreadsheet Rows -->
+              <div class="space-y-2">
+                <div class="grid grid-cols-4 gap-2 text-sm">
+                  <div class="bg-neutral-50 p-2 rounded border">Product</div>
+                  <div class="bg-neutral-50 p-2 rounded border">Price</div>
+                  <div class="bg-neutral-50 p-2 rounded border">Quantity</div>
+                  <div class="bg-accent-50 p-2 rounded border font-medium">Total</div>
+                </div>
+                <div class="grid grid-cols-4 gap-2 text-sm">
+                  <div class="bg-white p-2 rounded border">Laptop</div>
+                  <div class="bg-white p-2 rounded border">$1,200</div>
+                  <div class="bg-white p-2 rounded border">5</div>
+                  <div class="bg-primary-50 p-2 rounded border font-semibold">$6,000</div>
+                </div>
+                <div class="grid grid-cols-4 gap-2 text-sm">
+                  <div class="bg-white p-2 rounded border">Mouse</div>
+                  <div class="bg-white p-2 rounded border">$25</div>
+                  <div class="bg-white p-2 rounded border">10</div>
+                  <div class="bg-primary-50 p-2 rounded border font-semibold">$250</div>
+                </div>
+              </div>
+
+              <!-- AI Feature Indicator -->
+              <div class="flex items-center space-x-2 text-xs text-accent-600 bg-accent-50 p-3 rounded-lg">
+                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3z"/>
+                </svg>
+                <span>
+                  {currentLocale === 'ja' ? 'AIが数式を自動生成中...' : 'AI generating formulas...'}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Floating Elements -->
+          <div class="absolute -top-4 -right-4 w-16 h-16 bg-accent-500 rounded-full flex items-center justify-center text-white shadow-lg animate-bounce-gentle">
+            <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clip-rule="evenodd"/>
+            </svg>
+          </div>
+
+          <div class="absolute -bottom-4 -left-4 w-12 h-12 bg-primary-500 rounded-full flex items-center justify-center text-white shadow-lg animate-bounce-gentle animation-delay-1000">
+            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Custom animations for hero section */
+  @keyframes blob {
+    0% {
+      transform: translate(0px, 0px) scale(1);
+    }
+    33% {
+      transform: translate(30px, -50px) scale(1.1);
+    }
+    66% {
+      transform: translate(-20px, 20px) scale(0.9);
+    }
+    100% {
+      transform: translate(0px, 0px) scale(1);
+    }
+  }
+
+  .animate-blob {
+    animation: blob 7s infinite;
+  }
+
+  .animation-delay-2000 {
+    animation-delay: 2s;
+  }
+
+  .animation-delay-4000 {
+    animation-delay: 4s;
+  }
+
+  .animation-delay-300 {
+    animation-delay: 300ms;
+  }
+
+  .animation-delay-1000 {
+    animation-delay: 1s;
+  }
+
+  /* Enhance button hover effects */
+  .btn:hover {
+    transform: translateY(-2px);
+  }
+
+  /* High contrast mode support */
+  @media (prefers-contrast: high) {
+    .bg-gradient-to-br {
+      background: white;
+    }
+    
+    .bg-primary-50 {
+      background: white;
+    }
+    
+    .bg-accent-50 {
+      background: white;
+    }
+  }
+
+  /* Reduced motion support */
+  @media (prefers-reduced-motion: reduce) {
+    .animate-blob,
+    .animate-bounce-gentle {
+      animation: none;
+    }
+    
+    .btn:hover {
+      transform: none;
+    }
+  }
+</style>
+
+<script>
+  // Demo button functionality (placeholder for future demo modal)
+  document.addEventListener('DOMContentLoaded', () => {
+    const demoButton = document.querySelector('[data-demo-trigger]') as HTMLButtonElement;
+    
+    if (demoButton) {
+      demoButton.addEventListener('click', () => {
+        // Placeholder for demo modal or video
+        console.log('Demo functionality to be implemented');
+        
+        // For now, just show an alert
+        const isJapanese = document.documentElement.lang === 'ja';
+        alert(isJapanese 
+          ? 'デモ機能は近日公開予定です。事前登録をお願いします！' 
+          : 'Demo coming soon! Please join our waitlist!'
+        );
+      });
+    }
+  });
+</script>

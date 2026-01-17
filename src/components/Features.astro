@@ -1,0 +1,302 @@
+---
+import type { Locale } from '~/types';
+import { 
+  getLocalizedText, 
+  featuresContent,
+  getLocaleFromUrl 
+} from '~/utils/i18n';
+
+interface Props {
+  locale?: Locale;
+}
+
+const currentLocale = Astro.props.locale || getLocaleFromUrl(Astro.url);
+
+// Section heading and description
+const sectionTitle = {
+  ja: 'なぜSuperSheetなのか',
+  en: 'Why SuperSheet'
+};
+
+const sectionDescription = {
+  ja: '従来のスプレッドシートの限界を超えた、革新的な機能をご紹介します。',
+  en: 'Discover innovative features that go beyond traditional spreadsheet limitations.'
+};
+
+// Feature icons mapping
+const featureIcons = {
+  'local-first': {
+    svg: `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>`,
+    bgColor: 'bg-accent-500',
+    iconColor: 'text-white'
+  },
+  'real-time-sync': {
+    svg: `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>`,
+    bgColor: 'bg-primary-500',
+    iconColor: 'text-white'
+  },
+  'ai-automation': {
+    svg: `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>`,
+    bgColor: 'bg-purple-500',
+    iconColor: 'text-white'
+  }
+};
+---
+
+<section 
+  class="relative bg-neutral-50 section-padding" 
+  id="features"
+  aria-labelledby="features-heading"
+>
+  <div class="container-custom">
+    <!-- Section Header -->
+    <div class="text-center mb-16 animate-on-scroll">
+      <h2 
+        id="features-heading"
+        class="heading-lg mb-6 text-neutral-900"
+      >
+        {getLocalizedText(sectionTitle, currentLocale)}
+      </h2>
+      <p class="text-lead max-w-3xl mx-auto">
+        {getLocalizedText(sectionDescription, currentLocale)}
+      </p>
+    </div>
+
+    <!-- Features Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-12">
+      {featuresContent.map((feature, index) => {
+        const icon = featureIcons[feature.id as keyof typeof featureIcons];
+        const animationDelay = `animation-delay-${(index + 1) * 200}`;
+        
+        return (
+          <div 
+            class={`group relative bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-500 overflow-hidden animate-on-scroll ${animationDelay}`}
+          >
+            <!-- Feature Card Content -->
+            <div class="p-8">
+              <!-- Icon -->
+              <div class={`inline-flex items-center justify-center w-14 h-14 ${icon.bgColor} rounded-xl mb-6 group-hover:scale-110 transition-transform duration-300`}>
+                <svg 
+                  class={`w-8 h-8 ${icon.iconColor}`} 
+                  fill="none" 
+                  stroke="currentColor" 
+                  viewBox="0 0 24 24" 
+                  xmlns="http://www.w3.org/2000/svg"
+                  aria-hidden="true"
+                >
+                  <Fragment set:html={icon.svg} />
+                </svg>
+              </div>
+
+              <!-- Title -->
+              <h3 class="heading-md mb-4 text-neutral-900 group-hover:text-primary-600 transition-colors duration-300">
+                {getLocalizedText(feature.title, currentLocale)}
+              </h3>
+
+              <!-- Description -->
+              <p class="text-neutral-600 leading-relaxed">
+                {getLocalizedText(feature.description, currentLocale)}
+              </p>
+            </div>
+
+            <!-- Hover Effect -->
+            <div class="absolute inset-0 bg-gradient-to-br from-primary-50 to-accent-50 opacity-0 group-hover:opacity-50 transition-opacity duration-300 pointer-events-none" aria-hidden="true"></div>
+
+            <!-- Bottom Border Animation -->
+            <div class="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-primary-500 to-accent-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
+          </div>
+        );
+      })}
+    </div>
+
+    <!-- Additional CTA Section -->
+    <div class="text-center mt-16 animate-on-scroll animation-delay-800">
+      <div class="bg-white rounded-2xl shadow-lg p-8 lg:p-12 border border-neutral-200">
+        <h3 class="heading-md mb-4 text-neutral-900">
+          {currentLocale === 'ja' 
+            ? '今すぐベータテストに参加しませんか？' 
+            : 'Ready to join our beta test?'
+          }
+        </h3>
+        <p class="text-lead mb-8 max-w-2xl mx-auto">
+          {currentLocale === 'ja'
+            ? '限定ベータ版の早期アクセスと、製品開発への参加機会を得られます。'
+            : 'Get early access to our limited beta and help shape the future of spreadsheets.'
+          }
+        </p>
+        
+        <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+          <a
+            href={currentLocale === 'ja' ? 
+              'https://docs.google.com/forms/d/e/1FAIpQLSfTsLsTruZYoEW4LAxmoUsmncRqDg-tLLnKkxgI-D4cX9KFPA/viewform?usp=publish-editor' :
+              'https://docs.google.com/forms/d/e/1FAIpQLScIJBM_jWnXbLbt-ICUP86RMKBj3ZK35bVt6d2OFsCeieZcFw/viewform?usp=header'
+            }
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn btn-primary text-lg px-8 py-4 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
+          >
+            {currentLocale === 'ja' ? '事前登録する' : 'Join Waitlist'}
+            <svg 
+              class="ml-2 w-5 h-5" 
+              fill="none" 
+              stroke="currentColor" 
+              viewBox="0 0 24 24" 
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
+            >
+              <path 
+                stroke-linecap="round" 
+                stroke-linejoin="round" 
+                stroke-width="2" 
+                d="M17 8l4 4m0 0l-4 4m4-4H3"
+              />
+            </svg>
+          </a>
+
+          <!-- Feature stats -->
+          <div class="flex items-center space-x-6 text-sm text-neutral-600">
+            <div class="flex items-center">
+              <svg 
+                class="w-5 h-5 text-accent-500 mr-2" 
+                fill="currentColor" 
+                viewBox="0 0 20 20"
+                aria-hidden="true"
+              >
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+              </svg>
+              {currentLocale === 'ja' ? '無料' : 'Free'}
+            </div>
+            <div class="flex items-center">
+              <svg 
+                class="w-5 h-5 text-accent-500 mr-2" 
+                fill="currentColor" 
+                viewBox="0 0 20 20"
+                aria-hidden="true"
+              >
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+              </svg>
+              {currentLocale === 'ja' ? 'いつでもキャンセル可能' : 'Cancel anytime'}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Animation delays for staggered entrance */
+  .animation-delay-200 {
+    animation-delay: 200ms;
+  }
+
+  .animation-delay-400 {
+    animation-delay: 400ms;
+  }
+
+  .animation-delay-600 {
+    animation-delay: 600ms;
+  }
+
+  .animation-delay-800 {
+    animation-delay: 800ms;
+  }
+
+  /* Enhanced card hover effects */
+  .group:hover {
+    transform: translateY(-4px);
+  }
+
+  /* Subtle border animation */
+  .group::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    padding: 1px;
+    background: linear-gradient(135deg, transparent, rgba(99, 102, 241, 0.1), transparent);
+    border-radius: 1rem;
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .group:hover::before {
+    opacity: 1;
+  }
+
+  /* High contrast mode adjustments */
+  @media (prefers-contrast: high) {
+    .bg-neutral-50 {
+      background-color: white;
+    }
+    
+    .shadow-sm,
+    .shadow-lg,
+    .shadow-xl {
+      box-shadow: 0 0 0 2px #000;
+    }
+  }
+
+  /* Reduced motion support */
+  @media (prefers-reduced-motion: reduce) {
+    .group:hover {
+      transform: none;
+    }
+    
+    .group-hover\\:scale-110:hover {
+      transform: none;
+    }
+    
+    .btn:hover {
+      transform: none;
+    }
+  }
+</style>
+
+<script>
+  // Enhanced scroll animations with performance optimization
+  document.addEventListener('DOMContentLoaded', () => {
+    // Use Intersection Observer for better performance
+    const observerOptions: IntersectionObserverInit = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          // Add a small delay for staggered animations
+          const delay = entry.target.classList.contains('animation-delay-200') ? 200 :
+                       entry.target.classList.contains('animation-delay-400') ? 400 :
+                       entry.target.classList.contains('animation-delay-600') ? 600 :
+                       entry.target.classList.contains('animation-delay-800') ? 800 : 0;
+
+          setTimeout(() => {
+            entry.target.classList.add('is-visible');
+          }, delay);
+
+          observer.unobserve(entry.target);
+        }
+      });
+    }, observerOptions);
+
+    // Observe all elements with animation class
+    document.querySelectorAll('.animate-on-scroll').forEach((el) => {
+      observer.observe(el);
+    });
+
+    // Add performance-friendly hover effects
+    const featureCards = document.querySelectorAll('.group');
+    featureCards.forEach((card) => {
+      const htmlCard = card as HTMLElement;
+      card.addEventListener('mouseenter', () => {
+        htmlCard.style.willChange = 'transform';
+      });
+      
+      card.addEventListener('mouseleave', () => {
+        htmlCard.style.willChange = 'auto';
+      });
+    });
+  });
+</script>
