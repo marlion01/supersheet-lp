@@ -1,7 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import Header from '../../components/Header.astro';
-import Roadmap from '../../components/Roadmap.astro';
+import RoadmapComponent from '../../components/Roadmap.astro';
 import Footer from '../../components/Footer.astro';
 import type { Locale } from '~/types';
 
@@ -14,7 +14,7 @@ const locale: Locale = 'ko';
 	
 	<!-- Main Content -->
 	<main id="main-content">
-		<Roadmap locale={locale} />
+		<RoadmapComponent locale={locale} />
 	</main>
 	
 	<!-- Footer -->

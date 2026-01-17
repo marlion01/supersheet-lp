@@ -493,7 +493,7 @@ const roadmapContent = {
       const windowHeight = window.innerHeight;
       const scrollTop = window.scrollY;
 
-      milestones.forEach((milestone, index) => {
+      milestones.forEach((milestone) => {
         const rect = milestone.getBoundingClientRect();
         const elementTop = rect.top + scrollTop;
         const elementMiddle = elementTop + rect.height / 2;
