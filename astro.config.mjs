@@ -9,5 +9,26 @@ export default defineConfig({
   // 2. リポジトリ名（例：/supersheet-lp）※先頭にスラッシュ必須
   base: '/supersheet-lp',
 
-  integrations: [tailwind()],
+  // i18n設定を追加
+  i18n: {
+    defaultLocale: 'ja',
+    locales: ['ja', 'en', 'zh', 'ko'],
+    routing: {
+      prefixDefaultLocale: false,
+    },
+    fallback: {
+      en: 'ja',
+      zh: 'ja',
+      ko: 'ja'
+    }
+  },
+
+  // 静的サイト生成を明示
+  output: 'static',
+
+  integrations: [
+    tailwind({
+      applyBaseStyles: false,
+    })
+  ],
 });

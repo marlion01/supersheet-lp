@@ -67,9 +67,10 @@ const languages = [
 const currentLanguage = languages.find(lang => lang.code === currentLocale);
 const otherLanguages = languages.filter(lang => lang.code !== currentLocale);
 
-// Build navigation URLs
-const homeUrl = currentLocale === 'ja' ? '/' : `/${currentLocale}/`;
-const pricingUrl = currentLocale === 'ja' ? '/pricing/' : `/${currentLocale}/pricing/`;
+// Build navigation URLs with base path
+const baseUrl = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : import.meta.env.BASE_URL + '/';
+const homeUrl = currentLocale === 'ja' ? baseUrl : `${baseUrl}${currentLocale}/`;
+const pricingUrl = currentLocale === 'ja' ? `${baseUrl}pricing/` : `${baseUrl}${currentLocale}/pricing/`;
 
 // Logo text based on locale
 const logoText = currentLocale === 'ja' ? 'SuperSheet' : 'SuperSheet';

@@ -13,11 +13,11 @@ interface Props {
 const currentLocale = Astro.props.locale || getLocaleFromUrl(Astro.url);
 const ctaUrl = ctaUrls[currentLocale];
 
-// Build pricing URL
-// Build pricing, terms, and roadmap URLs
-const pricingUrl = currentLocale === 'ja' ? '/pricing/' : `/${currentLocale}/pricing/`;
-const termsUrl = currentLocale === 'ja' ? '/terms/' : `/${currentLocale}/terms/`;
-const roadmapUrl = currentLocale === 'ja' ? '/roadmap/' : `/${currentLocale}/roadmap/`;
+// Build URLs with base path
+const baseUrl = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : import.meta.env.BASE_URL + '/';
+const pricingUrl = currentLocale === 'ja' ? `${baseUrl}pricing/` : `${baseUrl}${currentLocale}/pricing/`;
+const termsUrl = currentLocale === 'ja' ? `${baseUrl}terms/` : `${baseUrl}${currentLocale}/terms/`;
+const roadmapUrl = currentLocale === 'ja' ? `${baseUrl}roadmap/` : `${baseUrl}${currentLocale}/roadmap/`;
 
 // Footer content
 const footerContent = {
