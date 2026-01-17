@@ -9,6 +9,9 @@ export default defineConfig({
   // 2. リポジトリ名（例：/supersheet-lp）※先頭にスラッシュ必須
   base: '/supersheet-lp',
 
+  // trailing slashの処理を統一
+  trailingSlash: 'always',
+
   // i18n設定を追加
   i18n: {
     defaultLocale: 'ja',
