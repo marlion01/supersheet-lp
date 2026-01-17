@@ -1,64 +1,13 @@
+// astro.config.mjs
 import { defineConfig } from 'astro/config';
-import tailwind from '@astrojs/tailwind';
-import sitemap from '@astrojs/sitemap';
+import tailwind from "@astrojs/tailwind";
 
-// https://astro.build/config
 export default defineConfig({
-  site: 'https://supersheet-team.github.io',
-  base: '/lp',
+  // 1. あなたのGitHub PagesのURL（https://<user>.github.io）
+  site: 'https://marlion01.github.io',
   
-  // i18n Configuration
-  i18n: {
-    defaultLocale: 'ja',
-    locales: ['ja', 'en', 'zh', 'ko'],
-    routing: {
-      prefixDefaultLocale: false,
-    },
-    fallback: {
-      en: 'ja',
-      zh: 'ja',
-      ko: 'ja'
-    }
-  },
+  // 2. リポジトリ名（例：/supersheet-lp）※先頭にスラッシュ必須
+  base: '/supersheet-lp',
 
-  // Integrations
-  integrations: [
-    tailwind({
-      applyBaseStyles: false,
-    }),
-    // sitemap({
-    //   i18n: {
-    //     defaultLocale: 'ja',
-    //     locales: {
-    //       ja: 'ja-JP',
-    //       en: 'en-US', 
-    //       zh: 'zh-CN',
-    //       ko: 'ko-KR',
-    //     },
-    //   },
-    //   filter: (page) => {
-    //     // Include all pages except any that might be problematic
-    //     return !page.includes('undefined');
-    //   },
-    // }),
-  ],
-
-  // Build configuration for GitHub Pages
-  output: 'static',
-  
-  // Optimizations
-  build: {
-    inlineStylesheets: 'auto',
-  },
-  
-  // Vite configuration
-  vite: {
-    build: {
-      rollupOptions: {
-        output: {
-          assetFileNames: 'assets/[name].[hash][extname]',
-        },
-      },
-    },
-  },
+  integrations: [tailwind()],
 });
