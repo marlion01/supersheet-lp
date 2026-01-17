@@ -10,12 +10,14 @@ export default defineConfig({
   // i18n Configuration
   i18n: {
     defaultLocale: 'ja',
-    locales: ['ja', 'en'],
+    locales: ['ja', 'en', 'zh', 'ko'],
     routing: {
       prefixDefaultLocale: false,
     },
     fallback: {
-      en: 'ja'
+      en: 'ja',
+      zh: 'ja',
+      ko: 'ja'
     }
   },
 
@@ -30,6 +32,8 @@ export default defineConfig({
         locales: {
           ja: 'ja',
           en: 'en',
+          zh: 'zh',
+          ko: 'ko',
         },
       },
     }),

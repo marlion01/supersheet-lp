@@ -15,12 +15,16 @@ const currentLocale = Astro.props.locale || getLocaleFromUrl(Astro.url);
 // Section heading and description
 const sectionTitle = {
   ja: 'なぜSuperSheetなのか',
-  en: 'Why SuperSheet'
+  en: 'Why SuperSheet',
+  zh: '为什么选择SuperSheet',
+  ko: '왜 SuperSheet인가요?'
 };
 
 const sectionDescription = {
   ja: '従来のスプレッドシートの限界を超えた、革新的な機能をご紹介します。',
-  en: 'Discover innovative features that go beyond traditional spreadsheet limitations.'
+  en: 'Discover innovative features that go beyond traditional spreadsheet limitations.',
+  zh: '探索超越传统电子表格局限性的创新功能。',
+  ko: '기존 스프레드시트의 한계를 뛰어넘는 혁신적인 기능을 발견하세요.'
 };
 
 // Feature icons mapping
@@ -70,7 +74,7 @@ const featureIcons = {
         
         return (
           <div 
-            class={`group relative bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-500 overflow-hidden animate-on-scroll ${animationDelay}`}
+            class={`group relative bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-500 overflow-hidden animate-on-scroll ${animationDelay} feature-card`}
           >
             <!-- Feature Card Content -->
             <div class="p-8">
@@ -99,8 +103,11 @@ const featureIcons = {
               </p>
             </div>
 
-            <!-- Hover Effect -->
-            <div class="absolute inset-0 bg-gradient-to-br from-primary-50 to-accent-50 opacity-0 group-hover:opacity-50 transition-opacity duration-300 pointer-events-none" aria-hidden="true"></div>
+            <!-- Light Reflection Effect -->
+            <div class="absolute inset-0 pointer-events-none light-reflection" aria-hidden="true">
+              <div class="absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              <div class="absolute -top-24 -left-24 w-48 h-48 bg-gradient-radial from-white/30 via-white/10 to-transparent rounded-full opacity-0 group-hover:opacity-100 group-hover:translate-x-12 group-hover:translate-y-12 transition-all duration-700 ease-out"></div>
+            </div>
 
             <!-- Bottom Border Animation -->
             <div class="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-primary-500 to-accent-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
@@ -115,12 +122,20 @@ const featureIcons = {
         <h3 class="heading-md mb-4 text-neutral-900">
           {currentLocale === 'ja' 
             ? '今すぐベータテストに参加しませんか？' 
+            : currentLocale === 'zh'
+            ? '准备好加入我们的测试版了吗？'
+            : currentLocale === 'ko'
+            ? '베타 테스트에 참여하시겠어요?'
             : 'Ready to join our beta test?'
           }
         </h3>
         <p class="text-lead mb-8 max-w-2xl mx-auto">
           {currentLocale === 'ja'
             ? '限定ベータ版の早期アクセスと、製品開発への参加機会を得られます。'
+            : currentLocale === 'zh'
+            ? '获取我们限量测试版的早期访问权，帮助塑造电子表格的未来。'
+            : currentLocale === 'ko'
+            ? '제한된 베타 버전에 대한 조기 액세스를 얻고 스프레드시트의 미래를 함께 만들어 보세요.'
             : 'Get early access to our limited beta and help shape the future of spreadsheets.'
           }
         </p>
@@ -135,7 +150,10 @@ const featureIcons = {
             rel="noopener noreferrer"
             class="btn btn-primary text-lg px-8 py-4 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
           >
-            {currentLocale === 'ja' ? '事前登録する' : 'Join Waitlist'}
+            {currentLocale === 'ja' ? '事前登録する' 
+              : currentLocale === 'zh' ? '加入候补名单'
+              : currentLocale === 'ko' ? '대기 명단 등록'
+              : 'Join Waitlist'}
             <svg 
               class="ml-2 w-5 h-5" 
               fill="none" 
@@ -164,7 +182,10 @@ const featureIcons = {
               >
                 <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
               </svg>
-              {currentLocale === 'ja' ? '無料' : 'Free'}
+              {currentLocale === 'ja' ? '無料' 
+                : currentLocale === 'zh' ? '免费'
+                : currentLocale === 'ko' ? '무료'
+                : 'Free'}
             </div>
             <div class="flex items-center">
               <svg 
@@ -175,7 +196,10 @@ const featureIcons = {
               >
                 <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
               </svg>
-              {currentLocale === 'ja' ? 'いつでもキャンセル可能' : 'Cancel anytime'}
+              {currentLocale === 'ja' ? 'いつでもキャンセル可能' 
+                : currentLocale === 'zh' ? '随时可取消'
+                : currentLocale === 'ko' ? '언제든 취소 가능'
+                : 'Cancel anytime'}
             </div>
           </div>
         </div>
@@ -202,27 +226,115 @@ const featureIcons = {
     animation-delay: 800ms;
   }
 
-  /* Enhanced card hover effects */
-  .group:hover {
-    transform: translateY(-4px);
+  /* Enhanced card hover effects with light reflection */
+  .feature-card {
+    position: relative;
+    background: linear-gradient(145deg, #ffffff, #fafafa);
+    border: 1px solid rgba(255, 255, 255, 0.2);
   }
 
-  /* Subtle border animation */
-  .group::before {
+  .feature-card:hover {
+    transform: translateY(-4px) scale(1.02);
+  }
+
+  /* Light reflection gradient */
+  .bg-gradient-radial {
+    background: radial-gradient(circle, var(--tw-gradient-stops));
+  }
+
+  /* Subtle animated border with light effect */
+  .feature-card::before {
     content: '';
     position: absolute;
     inset: 0;
     padding: 1px;
-    background: linear-gradient(135deg, transparent, rgba(99, 102, 241, 0.1), transparent);
+    background: linear-gradient(135deg, 
+      transparent 0%, 
+      rgba(255, 255, 255, 0.3) 25%, 
+      rgba(99, 102, 241, 0.1) 50%, 
+      rgba(255, 255, 255, 0.3) 75%, 
+      transparent 100%);
     border-radius: 1rem;
     mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
     mask-composite: exclude;
     opacity: 0;
-    transition: opacity 0.3s ease;
+    transition: all 0.5s ease;
   }
 
-  .group:hover::before {
+  .feature-card:hover::before {
     opacity: 1;
+    background: linear-gradient(135deg, 
+      rgba(255, 255, 255, 0.4) 0%, 
+      rgba(255, 255, 255, 0.6) 25%, 
+      rgba(99, 102, 241, 0.2) 50%, 
+      rgba(255, 255, 255, 0.6) 75%, 
+      rgba(255, 255, 255, 0.4) 100%);
+  }
+
+  /* Moving light reflection animation */
+  .light-reflection::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, 
+      transparent 30%, 
+      rgba(255, 255, 255, 0.3) 50%, 
+      transparent 70%);
+    transform: rotate(45deg) translate(-100%, -100%);
+    transition: transform 0.8s ease-out;
+    opacity: 0;
+  }
+
+  .feature-card:hover .light-reflection::after {
+    opacity: 1;
+    transform: rotate(45deg) translate(50%, 50%);
+  }
+
+  /* Shimmer effect for more dynamic light reflection */
+  @keyframes shimmer {
+    0% {
+      background-position: -200% center;
+    }
+    100% {
+      background-position: 200% center;
+    }
+  }
+
+  .feature-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.4),
+      transparent
+    );
+    background-size: 200% 100%;
+    animation: shimmer 2s infinite;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    border-radius: 1rem;
+    pointer-events: none;
+  }
+
+  .feature-card:hover::after {
+    opacity: 1;
+    animation: shimmer 1.5s ease-in-out infinite;
+  }
+
+  /* Enhance the glow effect */
+  .feature-card:hover {
+    box-shadow: 
+      0 25px 50px rgba(0, 0, 0, 0.1),
+      0 0 0 1px rgba(255, 255, 255, 0.2),
+      inset 0 1px 0 rgba(255, 255, 255, 0.3);
   }
 
   /* High contrast mode adjustments */
@@ -240,7 +352,7 @@ const featureIcons = {
 
   /* Reduced motion support */
   @media (prefers-reduced-motion: reduce) {
-    .group:hover {
+    .feature-card:hover {
       transform: none;
     }
     
@@ -250,6 +362,20 @@ const featureIcons = {
     
     .btn:hover {
       transform: none;
+    }
+
+    .feature-card::after {
+      animation: none !important;
+    }
+
+    .light-reflection::after {
+      transition: none !important;
+    }
+
+    @keyframes shimmer {
+      0%, 100% {
+        background-position: center;
+      }
     }
   }
 </style>

@@ -1,10 +1,12 @@
 // Language types
-export type Locale = 'ja' | 'en';
+export type Locale = 'ja' | 'en' | 'zh' | 'ko';
 
-// Content types for bilingual support
+// Content types for quadrilingual support
 export interface LocalizedContent {
   ja: string;
   en: string;
+  zh: string;
+  ko: string;
 }
 
 export interface LocalizedRichContent {
@@ -14,6 +16,16 @@ export interface LocalizedRichContent {
     cta: string;
   };
   en: {
+    headline: string;
+    subheadline: string;
+    cta: string;
+  };
+  zh: {
+    headline: string;
+    subheadline: string;
+    cta: string;
+  };
+  ko: {
     headline: string;
     subheadline: string;
     cta: string;
@@ -38,6 +50,8 @@ export interface FeatureItem {
 export interface CTAUrls {
   ja: string;
   en: string;
+  zh: string;
+  ko: string;
 }
 
 // SEO Meta types

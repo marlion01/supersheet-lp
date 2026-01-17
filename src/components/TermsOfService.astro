@@ -1,0 +1,325 @@
+---
+import type { Locale } from '~/types';
+import { getLocalizedText, getLocaleFromUrl } from '~/utils/i18n';
+
+interface Props {
+  locale?: Locale;
+}
+
+const currentLocale = Astro.props.locale || getLocaleFromUrl(Astro.url);
+
+// Terms content
+const termsContent = {
+  title: {
+    ja: 'SuperSheet 利用規約',
+    en: 'SuperSheet Terms of Service',
+    zh: 'SuperSheet 服务条款',
+    ko: 'SuperSheet 서비스 약관'
+  },
+  lastUpdated: {
+    ja: '最終更新日',
+    en: 'Last Updated',
+    zh: '最后更新',
+    ko: '최종 업데이트'
+  },
+  sections: {
+    overview: {
+      title: {
+        ja: '1. サービス概要',
+        en: '1. Service Overview',
+        zh: '1. 服务概览',
+        ko: '1. 서비스 개요'
+      },
+      content: {
+        ja: 'SuperSheet（以下「当サービス」といいます）は、ExcelやNotion、Zapierの機能を統合した次世代のハイブリッド表計算プラットフォームです。ローカルファーストアプローチによる高速処理と、クラウド同期による利便性を両立しています。',
+        en: 'SuperSheet (the "Service") is a next-generation hybrid spreadsheet platform that integrates features from Excel, Notion, and Zapier. We provide high-speed processing through a local-first approach while maintaining convenience through cloud synchronization.',
+        zh: 'SuperSheet（以下简称"本服务"）是一个集成了Excel、Notion和Zapier功能的下一代混合电子表格平台。通过本地优先的方式提供高速处理，同时通过云同步保持便利性。',
+        ko: 'SuperSheet(이하 "서비스"라 함)는 Excel, Notion, Zapier의 기능을 통합한 차세대 하이브리드 스프레드시트 플랫폼입니다. 로컬 우선 접근 방식을 통한 고속 처리와 클라우드 동기화를 통한 편의성을 모두 제공합니다.'
+      }
+    },
+    acceptance: {
+      title: {
+        ja: '2. 利用規約の同意',
+        en: '2. Acceptance of Terms',
+        zh: '2. 条款同意',
+        ko: '2. 약관 동의'
+      },
+      content: {
+        ja: '当サービスを利用することで、お客様は本利用規約に同意したものとみなされます。本規約に同意されない場合は、当サービスをご利用いただけません。',
+        en: 'By using the Service, you agree to be bound by these Terms of Service. If you do not agree to these terms, you may not use the Service.',
+        zh: '使用本服务即表示您同意受本服务条款的约束。如果您不同意这些条款，则不得使用本服务。',
+        ko: '서비스를 이용함으로써 귀하는 본 서비스 약관에 동의하는 것으로 간주됩니다. 본 약관에 동의하지 않으시는 경우 서비스를 이용하실 수 없습니다.'
+      }
+    },
+    userAccounts: {
+      title: {
+        ja: '3. ユーザーアカウント',
+        en: '3. User Accounts',
+        zh: '3. 用户账户',
+        ko: '3. 사용자 계정'
+      },
+      content: {
+        ja: 'アカウント作成時には正確な情報を提供し、アカウント情報を最新に保つ責任があります。パスワードの安全な管理はお客様の責任です。',
+        en: 'You are responsible for providing accurate information when creating an account and keeping your account information up to date. You are responsible for safeguarding your password.',
+        zh: '创建账户时，您有责任提供准确信息并保持账户信息的最新状态。您有责任保护您的密码安全。',
+        ko: '계정 생성 시 정확한 정보를 제공하고 계정 정보를 최신 상태로 유지할 책임이 있습니다. 비밀번호의 안전한 관리는 귀하의 책임입니다.'
+      }
+    },
+    dataPrivacy: {
+      title: {
+        ja: '4. データとプライバシー',
+        en: '4. Data and Privacy',
+        zh: '4. 数据和隐私',
+        ko: '4. 데이터 및 개인정보'
+      },
+      content: {
+        ja: 'ローカルファーストアプローチにより、お客様のデータは主にお客様のデバイスに保存されます。クラウド同期を有効にした場合のみ、暗号化されたデータがサーバーに保存されます。詳細はプライバシーポリシーをご確認ください。',
+        en: 'Through our local-first approach, your data is primarily stored on your device. Only when cloud sync is enabled will encrypted data be stored on our servers. Please see our Privacy Policy for details.',
+        zh: '通过本地优先的方式，您的数据主要存储在您的设备上。只有在启用云同步时，加密数据才会存储在我们的服务器上。详情请查看我们的隐私政策。',
+        ko: '로컬 우선 접근 방식을 통해 귀하의 데이터는 주로 귀하의 기기에 저장됩니다. 클라우드 동기화를 활성화한 경우에만 암호화된 데이터가 서버에 저장됩니다. 자세한 내용은 개인정보 처리방침을 참조하십시오.'
+      }
+    },
+    prohibitedUse: {
+      title: {
+        ja: '5. 禁止行為',
+        en: '5. Prohibited Use',
+        zh: '5. 禁止使用',
+        ko: '5. 금지 행위'
+      },
+      content: {
+        ja: '以下の行為は禁止されています：(a) 違法な活動、(b) サービスの不正使用、(c) 他のユーザーへの迷惑行為、(d) セキュリティの侵害。',
+        en: 'The following uses are prohibited: (a) illegal activities, (b) unauthorized use of the service, (c) harassment of other users, (d) security breaches.',
+        zh: '禁止以下使用行为：(a) 非法活动，(b) 未经授权使用服务，(c) 骚扰其他用户，(d) 安全漏洞。',
+        ko: '다음과 같은 사용은 금지됩니다: (a) 불법적인 활동, (b) 서비스의 무단 사용, (c) 다른 사용자에 대한 괴롭힘, (d) 보안 침해.'
+      }
+    },
+    intellectualProperty: {
+      title: {
+        ja: '6. 知的財産権',
+        en: '6. Intellectual Property',
+        zh: '6. 知识产权',
+        ko: '6. 지적 재산권'
+      },
+      content: {
+        ja: '当サービスおよびそのコンテンツは著作権、商標、その他の知的財産権によって保護されています。お客様のデータについては、お客様が所有権を保持します。',
+        en: 'The Service and its content are protected by copyright, trademark, and other intellectual property rights. You retain ownership of your data.',
+        zh: '本服务及其内容受版权、商标和其他知识产权保护。您保留对您数据的所有权。',
+        ko: '서비스 및 콘텐츠는 저작권, 상표권 및 기타 지적 재산권으로 보호됩니다. 귀하는 귀하의 데이터에 대한 소유권을 보유합니다.'
+      }
+    },
+    limitation: {
+      title: {
+        ja: '7. 責任の制限',
+        en: '7. Limitation of Liability',
+        zh: '7. 责任限制',
+        ko: '7. 책임 제한'
+      },
+      content: {
+        ja: '当サービスは「現状有姿」で提供されます。当社は、間接損害、付随損害、特別損害について責任を負いません。',
+        en: 'The Service is provided "as is." We are not liable for any indirect, incidental, or special damages.',
+        zh: '本服务按"原样"提供。我们不承担任何间接、附带或特殊损害的责任。',
+        ko: '서비스는 "있는 그대로" 제공됩니다. 당사는 간접적, 부수적 또는 특별 손해에 대해 책임지지 않습니다.'
+      }
+    },
+    termination: {
+      title: {
+        ja: '8. サービス終了',
+        en: '8. Termination',
+        zh: '8. 服务终止',
+        ko: '8. 서비스 종료'
+      },
+      content: {
+        ja: '当社またはお客様は、いつでも理由を問わずアカウントを終了できます。終了時には、クラウド上のデータは削除されますが、ローカルデータは保持されます。',
+        en: 'Either we or you may terminate your account at any time for any reason. Upon termination, cloud data will be deleted, but local data will be retained.',
+        zh: '我们或您可以随时因任何原因终止您的账户。终止时，云端数据将被删除，但本地数据将保留。',
+        ko: '당사 또는 귀하는 언제든지 어떤 이유로든 계정을 종료할 수 있습니다. 종료 시 클라우드 데이터는 삭제되지만 로컬 데이터는 보관됩니다.'
+      }
+    },
+    changes: {
+      title: {
+        ja: '9. 規約の変更',
+        en: '9. Changes to Terms',
+        zh: '9. 条款变更',
+        ko: '9. 약관 변경'
+      },
+      content: {
+        ja: '当社は本規約を随時変更する権利を留保します。重要な変更については、事前にお知らせいたします。',
+        en: 'We reserve the right to modify these terms at any time. We will notify you of significant changes in advance.',
+        zh: '我们保留随时修改这些条款的权利。我们将提前通知您重要的变更。',
+        ko: '당사는 언제든지 본 약관을 수정할 권리를 보유합니다. 중요한 변경 사항은 사전에 통지해 드립니다.'
+      }
+    },
+    contact: {
+      title: {
+        ja: '10. お問い合わせ',
+        en: '10. Contact Information',
+        zh: '10. 联系信息',
+        ko: '10. 연락처 정보'
+      },
+      content: {
+        ja: 'ご質問やご不明な点がございましたら、support@supersheet.comまでお問い合わせください。',
+        en: 'If you have any questions or concerns, please contact us at support@supersheet.com.',
+        zh: '如果您有任何问题或疑虑，请通过support@supersheet.com联系我们。',
+        ko: '질문이나 우려 사항이 있으시면 support@supersheet.com으로 연락해 주시기 바랍니다.'
+      }
+    }
+  }
+};
+
+const lastUpdatedDate = '2024年1月15日';
+---
+
+<section class="bg-white py-24">
+  <div class="container-custom max-w-4xl">
+    <!-- Header -->
+    <div class="text-center mb-16">
+      <h1 class="heading-xl mb-6 text-neutral-900">
+        {getLocalizedText(termsContent.title, currentLocale)}
+      </h1>
+      <p class="text-neutral-600">
+        {getLocalizedText(termsContent.lastUpdated, currentLocale)}: {lastUpdatedDate}
+      </p>
+    </div>
+
+    <!-- Terms Content -->
+    <div class="prose prose-lg max-w-none">
+      <!-- Service Overview -->
+      <div class="mb-12">
+        <h2 class="heading-md mb-4 text-neutral-900">
+          {getLocalizedText(termsContent.sections.overview.title, currentLocale)}
+        </h2>
+        <p class="text-neutral-700 leading-relaxed">
+          {getLocalizedText(termsContent.sections.overview.content, currentLocale)}
+        </p>
+      </div>
+
+      <!-- Acceptance of Terms -->
+      <div class="mb-12">
+        <h2 class="heading-md mb-4 text-neutral-900">
+          {getLocalizedText(termsContent.sections.acceptance.title, currentLocale)}
+        </h2>
+        <p class="text-neutral-700 leading-relaxed">
+          {getLocalizedText(termsContent.sections.acceptance.content, currentLocale)}
+        </p>
+      </div>
+
+      <!-- User Accounts -->
+      <div class="mb-12">
+        <h2 class="heading-md mb-4 text-neutral-900">
+          {getLocalizedText(termsContent.sections.userAccounts.title, currentLocale)}
+        </h2>
+        <p class="text-neutral-700 leading-relaxed">
+          {getLocalizedText(termsContent.sections.userAccounts.content, currentLocale)}
+        </p>
+      </div>
+
+      <!-- Data and Privacy -->
+      <div class="mb-12">
+        <h2 class="heading-md mb-4 text-neutral-900">
+          {getLocalizedText(termsContent.sections.dataPrivacy.title, currentLocale)}
+        </h2>
+        <p class="text-neutral-700 leading-relaxed">
+          {getLocalizedText(termsContent.sections.dataPrivacy.content, currentLocale)}
+        </p>
+      </div>
+
+      <!-- Prohibited Use -->
+      <div class="mb-12">
+        <h2 class="heading-md mb-4 text-neutral-900">
+          {getLocalizedText(termsContent.sections.prohibitedUse.title, currentLocale)}
+        </h2>
+        <p class="text-neutral-700 leading-relaxed">
+          {getLocalizedText(termsContent.sections.prohibitedUse.content, currentLocale)}
+        </p>
+      </div>
+
+      <!-- Intellectual Property -->
+      <div class="mb-12">
+        <h2 class="heading-md mb-4 text-neutral-900">
+          {getLocalizedText(termsContent.sections.intellectualProperty.title, currentLocale)}
+        </h2>
+        <p class="text-neutral-700 leading-relaxed">
+          {getLocalizedText(termsContent.sections.intellectualProperty.content, currentLocale)}
+        </p>
+      </div>
+
+      <!-- Limitation of Liability -->
+      <div class="mb-12">
+        <h2 class="heading-md mb-4 text-neutral-900">
+          {getLocalizedText(termsContent.sections.limitation.title, currentLocale)}
+        </h2>
+        <p class="text-neutral-700 leading-relaxed">
+          {getLocalizedText(termsContent.sections.limitation.content, currentLocale)}
+        </p>
+      </div>
+
+      <!-- Termination -->
+      <div class="mb-12">
+        <h2 class="heading-md mb-4 text-neutral-900">
+          {getLocalizedText(termsContent.sections.termination.title, currentLocale)}
+        </h2>
+        <p class="text-neutral-700 leading-relaxed">
+          {getLocalizedText(termsContent.sections.termination.content, currentLocale)}
+        </p>
+      </div>
+
+      <!-- Changes to Terms -->
+      <div class="mb-12">
+        <h2 class="heading-md mb-4 text-neutral-900">
+          {getLocalizedText(termsContent.sections.changes.title, currentLocale)}
+        </h2>
+        <p class="text-neutral-700 leading-relaxed">
+          {getLocalizedText(termsContent.sections.changes.content, currentLocale)}
+        </p>
+      </div>
+
+      <!-- Contact Information -->
+      <div class="mb-12">
+        <h2 class="heading-md mb-4 text-neutral-900">
+          {getLocalizedText(termsContent.sections.contact.title, currentLocale)}
+        </h2>
+        <p class="text-neutral-700 leading-relaxed">
+          {getLocalizedText(termsContent.sections.contact.content, currentLocale)}
+        </p>
+      </div>
+    </div>
+
+    <!-- Back to Home -->
+    <div class="text-center mt-16">
+      <a 
+        href={currentLocale === 'ja' ? '/' : `/${currentLocale}/`}
+        class="btn btn-primary"
+      >
+        {currentLocale === 'ja' ? 'ホームに戻る' 
+          : currentLocale === 'zh' ? '返回首页'
+          : currentLocale === 'ko' ? '홈으로 돌아가기'
+          : 'Back to Home'}
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Custom prose styles for better readability */
+  .prose h2 {
+    border-bottom: 2px solid #f1f5f9;
+    padding-bottom: 0.5rem;
+    margin-top: 2rem;
+  }
+
+  .prose p {
+    margin-bottom: 1rem;
+    line-height: 1.75;
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .prose {
+      font-size: 1rem;
+    }
+    
+    .prose h2 {
+      font-size: 1.5rem;
+    }
+  }
+</style>

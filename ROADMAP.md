@@ -1,24 +1,31 @@
 ## Roadmap
-私たちは「ハイブリッド表計算」という未踏の領域を開拓しています。
-開発はオープンかつ迅速に進めています。
+ハイブリッド表計算の革命は、もう始まっています。
+私たちは今、最終調整のフェーズにいます。
 
-### ✅ Phase 1: The Foundation (Completed)
-**「まずは、最強のローカルツールとして」**
-クラウドに依存しない、圧倒的に高速な基盤を構築しました。
-* **Local-First Engine:** Tauri v2 + SQLiteによるミリ秒単位の応答速度
-* **High-Performance Grid:** 仮想スクロールによる100万行データの描画
-* **Basic Calculation:** Excel互換の主要な数式・関数サポート
+### 🛠 Q1 2026 (Jan - Feb): Engine Refinement
+**「エンジンの極限化」**
+現在、私たちが注力しているのは「手触り」です。
+* **Zero Latency:** ローカル操作の応答速度を極限までチューニング
+* **Stress Test:** 100万行データのスクロール・編集負荷テスト
+* **Core Stability:** SQLite基盤の堅牢性検証完了
 
-### 🚧 Phase 2: Connectivity & AI (Current Focus)
-**「データをつなぎ、入力を自動化する」**
-現在、クローズドベータに向けて鋭意実装中です。
-* **Cloud Sync:** Go + gRPCによる、セキュアで堅牢なデバイス間同期
-* **Magic Import:** 画像やPDFをドラッグするだけで、AIが表データへ構造化
-* **Plugin System:** Pythonによるデータ分析スクリプトの実行環境
+### 💎 March 2026: Closed Beta Access
+**「選ばれし者のための先行アクセス」**
+4月の一般公開を前に、ウェイティングリスト登録者の中から**限定数名**を招待します。
+* **Exclusive Invite:** 登録者限定の招待状送付
+* **Sync Engine Unlocked:** デバイス間同期機能の解禁
+* **Feedback Loop:** 開発チームとの直接的な対話チャンネル
 
-### 🚀 Phase 3: Team & Ecosystem (Coming 2026)
-**「組織のOSになる」**
-個人ツールから、チームのコラボレーション基盤へ。
-* **Team Workspace:** リアルタイム共同編集とコメント機能
-* **Advanced Security:** RLS（行レベルセキュリティ）による厳格な権限管理
-* **Public API:** 外部ツール(Zapier等)との双方向連携
+### 🚀 April 2026: Public Beta Launch
+**「ハイブリッド革命の始まり」**
+待望のリリース。SuperSheetが、あなたの生産性を再定義します。
+* **Grand Opening:** 全てのユーザーへのアクセス開放
+* **Magic Import:** AIによる「画像からのデータ構造化」機能搭載
+* **Cloud Connect:** 外部API連携機能のベータ提供開始
+
+### 🔮 late 2026: Ecosystem Expansion
+**「組織のOSへ」**
+個人ツールから、チームのコラボレーション基盤へ進化します。
+* **Team Workspace:** リアルタイム共同編集
+* **Enterprise Security:** RLS（行レベルセキュリティ）と監査ログ
+* **Plugin Marketplace:** 拡張機能による無限の可能性

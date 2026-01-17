@@ -1,0 +1,101 @@
+---
+import Layout from '~/layouts/Layout.astro';
+import Header from '~/components/Header.astro';
+import PricingSection from '~/components/Pricing.astro';
+import Footer from '~/components/Footer.astro';
+import type { Locale } from '~/types';
+import { seoMeta, getLocalizedText, pricingContent } from '~/utils/i18n';
+
+const locale: Locale = 'ko';
+
+// SEO Meta for Korean pricing page
+const pageTitle = `${getLocalizedText(pricingContent.title, locale)} - ${getLocalizedText(seoMeta.title, locale)}`;
+const pageDescription = getLocalizedText(pricingContent.subtitle, locale);
+const pageKeywords = `가격, 요금, 플랜, ${getLocalizedText(seoMeta.keywords, locale)}`;
+
+// Canonical URL for Korean pricing page
+const canonicalUrl = Astro.site ? `${Astro.site}ko/pricing/` : 'https://supersheet-team.github.io/lp/ko/pricing/';
+---
+
+<Layout 
+  title={pageTitle}
+  description={pageDescription}
+  keywords={pageKeywords}
+  locale={locale}
+  canonicalUrl={canonicalUrl}
+>
+  <!-- Header -->
+  <Header locale={locale} />
+  
+  <!-- Main Content -->
+  <main id="main-content">
+    <!-- Pricing Section -->
+    <PricingSection locale={locale} />
+  </main>
+  
+  <!-- Footer -->
+  <Footer locale={locale} />
+</Layout>
+
+<!-- JSON-LD structured data for Korean pricing page -->
+<script type="application/ld+json" is:inline>
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": "https://supersheet-team.github.io/lp/ko/pricing/",
+  "url": "https://supersheet-team.github.io/lp/ko/pricing/",
+  "name": "SuperSheet 요금 플랜",
+  "description": "SuperSheet 요금 플랜을 확인하세요. 로컬 사용은 영구 무료입니다. 전문적인 클라우드 동기화 및 팀 고급 보안 기능을 제공합니다.",
+  "inLanguage": "ko",
+  "isPartOf": {
+    "@type": "WebSite",
+    "@id": "https://supersheet-team.github.io/lp/#website",
+    "url": "https://supersheet-team.github.io/lp/",
+    "name": "SuperSheet",
+    "description": "차세대 하이브리드 스프레드시트 플랫폼"
+  },
+  "about": {
+    "@type": "SoftwareApplication",
+    "name": "SuperSheet",
+    "applicationCategory": "Spreadsheet Software"
+  },
+  "mainEntity": [
+    {
+      "@type": "Product",
+      "name": "SuperSheet Starter",
+      "description": "개인을 위한 최고의 스프레드시트",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "KRW",
+        "availability": "https://schema.org/InStock",
+        "priceValidUntil": "2025-12-31"
+      }
+    },
+    {
+      "@type": "Product", 
+      "name": "SuperSheet Pro",
+      "description": "디바이스 간 동기화 및 자동화",
+      "offers": {
+        "@type": "Offer",
+        "price": "12000",
+        "priceCurrency": "KRW",
+        "availability": "https://schema.org/PreOrder",
+        "priceValidUntil": "2025-12-31"
+      }
+    },
+    {
+      "@type": "Product",
+      "name": "SuperSheet Team", 
+      "description": "조직을 위한 보안과 제어",
+      "offers": {
+        "@type": "Offer",
+        "price": "25000",
+        "priceCurrency": "KRW", 
+        "availability": "https://schema.org/PreOrder",
+        "priceValidUntil": "2025-12-31"
+      }
+    }
+  ]
+}
+</script>

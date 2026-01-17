@@ -3,8 +3,7 @@ import type { Locale } from '~/types';
 import { 
   getLocalizedText, 
   navItems, 
-  getLocaleFromUrl, 
-  getAlternativeLocale
+  getLocaleFromUrl
 } from '~/utils/i18n';
 
 interface Props {
@@ -12,12 +11,65 @@ interface Props {
 }
 
 const currentLocale = Astro.props.locale || getLocaleFromUrl(Astro.url);
-const alternativeLocale = getAlternativeLocale(currentLocale);
+
+// Language data with flags
+const languages = [
+  {
+    code: 'ja',
+    name: '日本語',
+    flag: `<svg viewBox="0 0 900 600" class="w-5 h-3.5">
+      <rect width="900" height="600" fill="#fff"/>
+      <circle cx="450" cy="300" r="180" fill="#BC002D"/>
+    </svg>`
+  },
+  {
+    code: 'en',
+    name: 'English',
+    flag: `<svg viewBox="0 0 1200 600" class="w-5 h-3.5">
+      <rect width="1200" height="600" fill="#012169"/>
+      <path d="M0,0 L1200,600 M1200,0 L0,600" stroke="#fff" stroke-width="120"/>
+      <path d="M600,0 V600 M0,300 H1200" stroke="#fff" stroke-width="200"/>
+      <path d="M600,0 V600 M0,300 H1200" stroke="#C8102E" stroke-width="120"/>
+      <path d="M0,0 L1200,600" stroke="#C8102E" stroke-width="80"/>
+      <path d="M1200,0 L0,600" stroke="#C8102E" stroke-width="80"/>
+    </svg>`
+  },
+  {
+    code: 'zh',
+    name: '中文',
+    flag: `<svg viewBox="0 0 900 600" class="w-5 h-3.5">
+      <rect width="900" height="600" fill="#DE2910"/>
+      <polygon points="150,150 180,240 120,195 180,195 120,240" fill="#FFDE00"/>
+      <polygon points="270,120 285,156 249,141 285,141 249,156" fill="#FFDE00"/>
+      <polygon points="270,210 285,246 249,231 285,231 249,246" fill="#FFDE00"/>
+      <polygon points="270,300 285,336 249,321 285,321 249,336" fill="#FFDE00"/>
+      <polygon points="270,390 285,426 249,411 285,411 249,426" fill="#FFDE00"/>
+    </svg>`
+  },
+  {
+    code: 'ko',
+    name: '한국어',
+    flag: `<svg viewBox="0 0 900 600" class="w-5 h-3.5">
+      <rect width="900" height="600" fill="#fff"/>
+      <circle cx="450" cy="300" r="120" fill="none" stroke="#C60C30" stroke-width="80"/>
+      <path d="M330,180 A120,120 0 0,1 570,180 A60,60 0 0,0 450,240 A60,60 0 0,1 330,180 Z" fill="#C60C30"/>
+      <path d="M330,420 A120,120 0 0,0 570,420 A60,60 0 0,1 450,360 A60,60 0 0,0 330,420 Z" fill="#003478"/>
+      <g stroke="#000" stroke-width="15" fill="none">
+        <path d="M120,120 L240,240 M120,135 L240,255 M120,150 L240,270"/>
+        <path d="M660,120 L780,240 M660,135 L780,255 M660,150 L780,270"/>
+        <path d="M120,360 L240,480 M135,360 L255,480 M150,360 L270,480"/>
+        <path d="M660,360 L780,480 M675,360 L795,480 M690,360 L810,480"/>
+      </g>
+    </svg>`
+  }
+];
+
+const currentLanguage = languages.find(lang => lang.code === currentLocale);
+const otherLanguages = languages.filter(lang => lang.code !== currentLocale);
 
 // Build navigation URLs
-const homeUrl = currentLocale === 'ja' ? '/' : '/en/';
-const pricingUrl = currentLocale === 'ja' ? '/pricing/' : '/en/pricing/';
-const alternativeUrl = alternativeLocale === 'ja' ? '/' : '/en/';
+const homeUrl = currentLocale === 'ja' ? '/' : `/${currentLocale}/`;
+const pricingUrl = currentLocale === 'ja' ? '/pricing/' : `/${currentLocale}/pricing/`;
 
 // Logo text based on locale
 const logoText = currentLocale === 'ja' ? 'SuperSheet' : 'SuperSheet';
@@ -91,33 +143,42 @@ const logoText = currentLocale === 'ja' ? 'SuperSheet' : 'SuperSheet';
         <!-- Language Switcher -->
         <div class="flex items-center">
           <div class="relative">
-            <a
-              href={alternativeUrl}
-              class="inline-flex items-center px-3 py-2 text-sm font-medium text-neutral-700 bg-neutral-100 hover:bg-neutral-200 hover:text-primary-600 rounded-lg transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
-              aria-label={currentLocale === 'ja' ? 'Switch to English' : '日本語に切り替え'}
-              hreflang={alternativeLocale === 'ja' ? 'ja' : 'en'}
+            <button
+              type="button"
+              class="language-switcher-desktop inline-flex items-center px-3 py-2 text-sm font-medium text-neutral-700 bg-neutral-100 hover:bg-neutral-200 hover:text-primary-600 rounded-lg transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
+              aria-label="Select language"
+              aria-expanded="false"
+              aria-haspopup="true"
             >
-              <!-- Language Icon -->
-              <svg 
-                class="w-4 h-4 mr-2" 
-                fill="none" 
-                stroke="currentColor" 
-                viewBox="0 0 24 24" 
-                xmlns="http://www.w3.org/2000/svg"
-                aria-hidden="true"
-              >
-                <path 
-                  stroke-linecap="round" 
-                  stroke-linejoin="round" 
-                  stroke-width="2" 
-                  d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"
-                />
-              </svg>
+              <!-- Current Language Flag -->
+              <Fragment set:html={currentLanguage?.flag} />
               
-              <span>
-                {alternativeLocale === 'ja' ? '日本語' : 'English'}
+              <span class="ml-2">
+                {currentLanguage?.name}
               </span>
-            </a>
+              
+              <!-- Dropdown Arrow -->
+              <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+              </svg>
+            </button>
+            
+            <!-- Dropdown Menu -->
+            <div class="language-dropdown-desktop absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-neutral-200 py-1 z-50 hidden">
+              {otherLanguages.map(language => {
+                const langUrl = language.code === 'ja' ? '/' : `/${language.code}/`;
+                return (
+                  <a
+                    href={langUrl}
+                    class="flex items-center px-4 py-2 text-sm text-neutral-700 hover:bg-neutral-100 transition-colors duration-200"
+                    hreflang={language.code}
+                  >
+                    <Fragment set:html={language.flag} />
+                    <span class="ml-3">{language.name}</span>
+                  </a>
+                );
+              })}
+            </div>
           </div>
         </div>
       </nav>
@@ -190,29 +251,44 @@ const logoText = currentLocale === 'ja' ? 'SuperSheet' : 'SuperSheet';
         </a>
         
         <!-- Mobile Language Switcher -->
-        <a
-          href={alternativeUrl}
-          class="flex items-center px-3 py-2 text-base font-medium text-neutral-700 hover:text-primary-600 hover:bg-neutral-100 rounded-md transition-colors duration-200"
-          role="menuitem"
-          hreflang={alternativeLocale === 'ja' ? 'ja' : 'en'}
-        >
-          <svg 
-            class="w-5 h-5 mr-3" 
-            fill="none" 
-            stroke="currentColor" 
-            viewBox="0 0 24 24" 
-            xmlns="http://www.w3.org/2000/svg"
-            aria-hidden="true"
+        <div class="relative">
+          <button
+            type="button"
+            class="language-switcher-mobile flex items-center justify-between w-full px-3 py-2 text-base font-medium text-neutral-700 hover:text-primary-600 hover:bg-neutral-100 rounded-md transition-colors duration-200"
+            role="menuitem"
+            aria-label="Select language"
+            aria-expanded="false"
+            aria-haspopup="true"
           >
-            <path 
-              stroke-linecap="round" 
-              stroke-linejoin="round" 
-              stroke-width="2" 
-              d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"
-            />
-          </svg>
-          {alternativeLocale === 'ja' ? '日本語' : 'English'}
-        </a>
+            <div class="flex items-center">
+              <Fragment set:html={currentLanguage?.flag} />
+              <span class="ml-3">{currentLanguage?.name}</span>
+            </div>
+            
+            <!-- Dropdown Arrow -->
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+            </svg>
+          </button>
+          
+          <!-- Mobile Dropdown Menu -->
+          <div class="language-dropdown-mobile ml-6 mt-2 space-y-1 hidden">
+            {otherLanguages.map(language => {
+              const langUrl = language.code === 'ja' ? '/' : `/${language.code}/`;
+              return (
+                <a
+                  href={langUrl}
+                  class="flex items-center px-3 py-2 text-sm text-neutral-600 hover:text-primary-600 hover:bg-neutral-50 rounded-md transition-colors duration-200"
+                  hreflang={language.code}
+                  role="menuitem"
+                >
+                  <Fragment set:html={language.flag} />
+                  <span class="ml-3">{language.name}</span>
+                </a>
+              );
+            })}
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -269,6 +345,53 @@ const logoText = currentLocale === 'ja' ? 'SuperSheet' : 'SuperSheet';
         }
       });
     }
+
+    // Language switcher dropdown functionality
+    const desktopLanguageSwitcher = document.querySelector('.language-switcher-desktop') as HTMLButtonElement;
+    const desktopLanguageDropdown = document.querySelector('.language-dropdown-desktop') as HTMLElement;
+    const mobileLanguageSwitcher = document.querySelector('.language-switcher-mobile') as HTMLButtonElement;
+    const mobileLanguageDropdown = document.querySelector('.language-dropdown-mobile') as HTMLElement;
+
+    // Desktop language switcher
+    if (desktopLanguageSwitcher && desktopLanguageDropdown) {
+      desktopLanguageSwitcher.addEventListener('click', () => {
+        const isExpanded = desktopLanguageSwitcher.getAttribute('aria-expanded') === 'true';
+        desktopLanguageDropdown.classList.toggle('hidden');
+        desktopLanguageSwitcher.setAttribute('aria-expanded', (!isExpanded).toString());
+      });
+
+      // Close desktop dropdown when clicking outside
+      document.addEventListener('click', (e) => {
+        if (!desktopLanguageSwitcher.contains(e.target as Node) && !desktopLanguageDropdown.contains(e.target as Node)) {
+          desktopLanguageDropdown.classList.add('hidden');
+          desktopLanguageSwitcher.setAttribute('aria-expanded', 'false');
+        }
+      });
+    }
+
+    // Mobile language switcher
+    if (mobileLanguageSwitcher && mobileLanguageDropdown) {
+      mobileLanguageSwitcher.addEventListener('click', () => {
+        const isExpanded = mobileLanguageSwitcher.getAttribute('aria-expanded') === 'true';
+        mobileLanguageDropdown.classList.toggle('hidden');
+        mobileLanguageSwitcher.setAttribute('aria-expanded', (!isExpanded).toString());
+      });
+    }
+
+    // Close language dropdowns on Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        if (desktopLanguageDropdown && !desktopLanguageDropdown.classList.contains('hidden')) {
+          desktopLanguageDropdown.classList.add('hidden');
+          desktopLanguageSwitcher?.setAttribute('aria-expanded', 'false');
+          desktopLanguageSwitcher?.focus();
+        }
+        if (mobileLanguageDropdown && !mobileLanguageDropdown.classList.contains('hidden')) {
+          mobileLanguageDropdown.classList.add('hidden');
+          mobileLanguageSwitcher?.setAttribute('aria-expanded', 'false');
+        }
+      }
+    });
   });
 </script>
 

@@ -1,0 +1,111 @@
+---
+import Layout from '~/layouts/Layout.astro';
+import Header from '~/components/Header.astro';
+import Hero from '~/components/Hero.astro';
+import Features from '~/components/Features.astro';
+import Footer from '~/components/Footer.astro';
+import type { Locale } from '~/types';
+import { seoMeta, getLocalizedText } from '~/utils/i18n';
+
+const locale: Locale = 'zh';
+
+// SEO Meta for Chinese page
+const pageTitle = getLocalizedText(seoMeta.title, locale);
+const pageDescription = getLocalizedText(seoMeta.description, locale);
+const pageKeywords = getLocalizedText(seoMeta.keywords, locale);
+
+// Canonical URL for Chinese page
+const canonicalUrl = Astro.site ? `${Astro.site}zh/` : 'https://supersheet-team.github.io/lp/zh/';
+---
+
+<Layout 
+  title={pageTitle}
+  description={pageDescription}
+  keywords={pageKeywords}
+  locale={locale}
+  canonicalUrl={canonicalUrl}
+>
+  <!-- Skip to main content is already in Layout.astro -->
+  
+  <!-- Header -->
+  <Header locale={locale} />
+  
+  <!-- Main Content -->
+  <main id="main-content">
+    <!-- Hero Section -->
+    <Hero locale={locale} />
+    
+    <!-- Features Section -->
+    <Features locale={locale} />
+  </main>
+  
+  <!-- Footer -->
+  <Footer locale={locale} />
+</Layout>
+
+<!-- JSON-LD structured data for Chinese page -->
+<script type="application/ld+json" is:inline>
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": "https://supersheet-team.github.io/lp/zh/",
+  "url": "https://supersheet-team.github.io/lp/zh/",
+  "name": "SuperSheet - 下一代混合电子表格平台",
+  "description": "Excel的灵活性、Notion的组织能力和Zapier的自动化功能，全部整合在一个平台中。结合本地高速和云端稳健性的下一代混合电子表格平台。",
+  "inLanguage": "zh",
+  "isPartOf": {
+    "@type": "WebSite",
+    "@id": "https://supersheet-team.github.io/lp/#website",
+    "url": "https://supersheet-team.github.io/lp/",
+    "name": "SuperSheet",
+    "description": "下一代混合电子表格平台",
+    "publisher": {
+      "@type": "Organization",
+      "name": "SuperSheet Team",
+      "@id": "https://supersheet-team.github.io/lp/#organization"
+    },
+    "potentialAction": [
+      {
+        "@type": "SearchAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "https://supersheet-team.github.io/lp/zh/?s={search_term_string}"
+        },
+        "query-input": "required name=search_term_string"
+      }
+    ]
+  },
+  "about": {
+    "@type": "SoftwareApplication",
+    "name": "SuperSheet",
+    "applicationCategory": "Spreadsheet Software",
+    "operatingSystem": "Cross-platform",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "CNY"
+    }
+  },
+  "mainEntity": {
+    "@type": "SoftwareApplication",
+    "name": "SuperSheet",
+    "description": "下一代混合电子表格平台",
+    "applicationCategory": "ProductivityApplication",
+    "operatingSystem": ["Windows", "macOS", "Linux"],
+    "softwareVersion": "1.0.0",
+    "releaseNotes": "测试版即将发布",
+    "screenshot": "https://supersheet-team.github.io/lp/assets/screenshot.png",
+    "softwareHelp": "https://supersheet-team.github.io/lp/zh/help",
+    "author": {
+      "@type": "Organization",
+      "name": "SuperSheet Team"
+    },
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "CNY",
+      "availability": "https://schema.org/InStock"
+    }
+  }
+}
+</script>
