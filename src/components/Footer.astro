@@ -14,9 +14,10 @@ const currentLocale = Astro.props.locale || getLocaleFromUrl(Astro.url);
 const ctaUrl = ctaUrls[currentLocale];
 
 // Build pricing URL
-// Build pricing and terms URLs
+// Build pricing, terms, and roadmap URLs
 const pricingUrl = currentLocale === 'ja' ? '/pricing/' : `/${currentLocale}/pricing/`;
 const termsUrl = currentLocale === 'ja' ? '/terms/' : `/${currentLocale}/terms/`;
+const roadmapUrl = currentLocale === 'ja' ? '/roadmap/' : `/${currentLocale}/roadmap/`;
 
 // Footer content
 const footerContent = {
@@ -217,7 +218,7 @@ const currentYear = new Date().getFullYear();
             </a>
           </li>
           <li>
-            <a href="#" class="text-neutral-300 hover:text-accent-400 transition-colors duration-200">
+            <a href={roadmapUrl} class="text-neutral-300 hover:text-accent-400 transition-colors duration-200">
               {currentLocale === 'ja' ? 'ロードマップ' 
                 : currentLocale === 'zh' ? '路线图'
                 : currentLocale === 'ko' ? '로드맵'

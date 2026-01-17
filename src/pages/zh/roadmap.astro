@@ -1,20 +1,20 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import Header from '../../components/Header.astro';
-import TermsOfService from '../../components/TermsOfService.astro';
+import Roadmap from '../../components/Roadmap.astro';
 import Footer from '../../components/Footer.astro';
 import type { Locale } from '~/types';
 
-const locale: Locale = 'ko';
+const locale: Locale = 'zh';
 ---
 
-<Layout title="SuperSheet 서비스 약관" locale={locale}>
+<Layout title="SuperSheet 路线图" locale={locale}>
 	<!-- Header -->
 	<Header locale={locale} />
 	
 	<!-- Main Content -->
 	<main id="main-content">
-		<TermsOfService locale={locale} />
+		<Roadmap locale={locale} />
 	</main>
 	
 	<!-- Footer -->
