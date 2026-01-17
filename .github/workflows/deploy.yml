@@ -1,31 +1,25 @@
-name: Deploy SuperSheet LP to GitHub Pages
+name: Deploy Astro Site to GitHub Pages
 
 on:
-  # Runs on pushes targeting the default branch
+  # mainブランチへのプッシュ時に実行
   push:
-    branches: ["main", "master"]
-
-  # Allows you to run this workflow manually from the Actions tab
+    branches: [ main ]
+  # 手動実行を許可（デバッグ用）
   workflow_dispatch:
 
-# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+# GITHUB_TOKENの権限設定
 permissions:
   contents: read
   pages: write
   id-token: write
 
-# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
-# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
+# 同時実行の制御（古いビルドをキャンセル）
 concurrency:
   group: "pages"
-  cancel-in-progress: false
-
-env:
-  BUILD_PATH: "." # default value when not using subfolders
+  cancel-in-progress: true
 
 jobs:
   build:
-    name: Build
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -36,30 +30,16 @@ jobs:
         with:
           bun-version: latest
 
-      - name: Setup Node.js (backup for compatibility)
-        uses: actions/setup-node@v4
-        with:
-          node-version: "20"
-
       - name: Install dependencies
-        run: bun install
-        working-directory: ${{ env.BUILD_PATH }}
+        run: bun install --frozen-lockfile
 
       - name: Build with Astro
-        run: |
-          bun run build
-        working-directory: ${{ env.BUILD_PATH }}
-
-      - name: Setup Pages
-        id: pages
-        uses: actions/configure-pages@v4
-        with:
-          enablement: true
+        run: bun run build
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ${{ env.BUILD_PATH }}/dist
+          path: ./dist
 
   deploy:
     environment:
@@ -67,7 +47,6 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     needs: build
     runs-on: ubuntu-latest
-    name: Deploy
     steps:
       - name: Deploy to GitHub Pages
         id: deployment

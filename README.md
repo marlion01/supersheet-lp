@@ -175,8 +175,3 @@ This project is proprietary software owned by SuperSheet Team.
 ## 🤝 コントリビューション
 
 内部プロジェクトのため、外部からのコントリビューションは受け付けていません。
-
----
-
-**開発者**: SuperSheet Team  
-**最終更新**: 2026-01-17
