@@ -167,7 +167,7 @@ const logoText = currentLocale === 'ja' ? 'SuperSheet' : 'SuperSheet';
             <!-- Dropdown Menu -->
             <div class="language-dropdown-desktop absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-neutral-200 py-1 z-50 hidden">
               {otherLanguages.map(language => {
-                const langUrl = language.code === 'ja' ? '/' : `/${language.code}/`;
+                const langUrl = language.code === 'ja' ? baseUrl : `${baseUrl}${language.code}/`;
                 return (
                   <a
                     href={langUrl}
@@ -275,7 +275,7 @@ const logoText = currentLocale === 'ja' ? 'SuperSheet' : 'SuperSheet';
           <!-- Mobile Dropdown Menu -->
           <div class="language-dropdown-mobile ml-6 mt-2 space-y-1 hidden">
             {otherLanguages.map(language => {
-              const langUrl = language.code === 'ja' ? '/' : `/${language.code}/`;
+              const langUrl = language.code === 'ja' ? baseUrl : `${baseUrl}${language.code}/`;
               return (
                 <a
                   href={langUrl}
